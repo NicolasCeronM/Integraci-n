@@ -26,7 +26,7 @@
                     <img src="{% static 'imagenes/logo.png' %}" alt="" width="200px" height="100">
                 </a></div>
             <div class="list-group list-group-flush my-3">
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text 
+                <a href="{% url 'home:home' %}" class="list-group-item list-group-item-action bg-transparent second-text 
                 {% if request.path == '/dash_admin/' %} active {% endif %} "><i
                         class="fas fa-tachometer-alt me-2"></i>Inicio</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold

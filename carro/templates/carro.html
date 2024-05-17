@@ -1,0 +1,12 @@
+<p>esto es el carro</p>
+
+{% if request.session.carro.items %}
+    {% for key, value in request.session.carro.items %}
+
+    {{value.nombre}}
+    {{value.cantidad}}
+    {{value.precio}}
+
+
+    {% endfor %}
+{% endif %}
