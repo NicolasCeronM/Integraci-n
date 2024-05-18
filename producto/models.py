@@ -14,7 +14,8 @@ class Producto(models.Model):
     precio = models.IntegerField()
     descripcion = models.TextField()
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
-    imagen = models.ImageField(upload_to='producto')
+    imagen = models.ImageField(upload_to='producto', null=True, blank=True)
+    stock = models.IntegerField(null=True)
 
     def __str__(self):
         return self.nombre
