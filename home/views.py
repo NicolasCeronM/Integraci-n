@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect, get_object_or_404
 from producto.models import Producto, Categoria
 
 # Create your views here.
@@ -49,3 +49,10 @@ def admin(request):
         # return redirect(to='admin_page:productos')
     
         return render(request,'administrador/admin.html', data)
+
+def eliminar(request,id):
+
+    producto = get_object_or_404(Producto, id=id)
+    producto.delete()
+
+    return redirect(to='home:administrador')

@@ -15,7 +15,7 @@ def agregar_producto(request,producto_id):
     carro.agregar(producto = producto)
 
 
-    return redirect("home:home")
+    return redirect("carro:carro")
 
 def eliminiar_producto(request,producto_id):
 

@@ -10,5 +10,4 @@ def importe_total_carro(request):
         pass
     except:
       pass
-    return {'importe_total_carro':total,
-            'cantidad_total_carro':cantidad}
+    return {'importe_total_carro':total}
