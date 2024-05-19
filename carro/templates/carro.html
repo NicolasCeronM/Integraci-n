@@ -2,19 +2,6 @@
 
 {% block content %}
 
-{% if request.session.carro.items %}
-{% for key, value in request.session.carro.items %}
-
-{{value.nombre}}
-{{value.cantidad}}
-{{value.precio}}
-
-
-
-
-{% endfor %}
-{% endif %}
-
 <!doctype html>
 <html lang="en">
 
@@ -58,46 +45,61 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-8">
-                <h3 class="subtitulo">Carrito de compras</h3>
+
+                <!--Falta boton para vaciar carro-->
+
+                <a href="{% url 'carro:limpiar' %}">Vaciar carro</a>
+
+                <!--------------------------------------------------->
+
+                <h3 class="subtitulo">Carrito de compras {{importe_total_carro}}</h3>
+
+                {% if request.session.carro.items %}
+                {% for key, value in request.session.carro.items %}
+
                 <div class="caja_info">
                     <div class="carrito_prod_imagen">
-                        <img src="http://127.0.0.1:8000/media/producto/descarga.jpeg" class="img-fluid" />
+                        <img src="{{value.imagen}}" class="img-fluid" />
                     </div>
 
                     <div class="carrito_prod_info">
-                        <p class="small_info">Cód. Producto: 4770
+                        <p class="small_info">Cód. Producto: {{value.producto_id}}
                         </p>
-                        <h3 class="titulo">ATORNILLADOR AZUL 10MM C/BAT. DE LITIO 10.8V ENERGIZER</h3>
+                        <h3 class="titulo">{{value.nombre}}</h3>
                     </div>
 
                     <div class="carrito_prod_numeros">
-                        <a href="javascript:;" class="eliminar_producto"
+                        <a href="{% url 'carro:eliminar' value.producto_id %}" class="eliminar_producto"
                             onClick="deleteProduct('9cfb444411f4916d5989466c581d9517');"><img
                                 src="https://www.ferremas.com.py/assets/img/eliminar.svg" class="img-fluid" /></a>
 
                         <div class="un_producto_info_bottom">
                             <div class="un_producto_precio">
                                 <span class="txt">Precio unitario:</span>
-                                <span class="precio">$70.000</span>
+                                <span class="precio">${{value.precio}}</span>
                             </div>
                             <div class="un_producto_cont_botones">
                                 <div class="un_producto_cantidad">
                                     <div class="input-group">
                                         <span class="input-group-btn btn_minus">
-                                            <button type="button" class="btn btn-number" data-type="minus"
-                                                data-field="quant[2]"
-                                                onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 2);">
-                                                <span class="glyphicon glyphicon-minus"></span>
-                                            </button>
+                                            <a href="{% url 'carro:restar' value.producto_id %}">
+                                                <button type="button" class="btn btn-number" data-type="minus"
+                                                    data-field="quant[2]"
+                                                    onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 2);">
+                                                    <span class="glyphicon glyphicon-minus"></span>
+                                                </button>
+                                            </a>
                                         </span>
-                                        <input type="text" name="quant[2]" class="form-control input-number" value="1"
-                                            readonly>
+                                        <input type="text" name="quant[2]" class="form-control input-number"
+                                            value="{{value.cantidad}}" readonly>
                                         <span class="input-group-btn btn_plus">
-                                            <button type="button" class="btn btn-number" data-type="plus"
-                                                data-field="quant[2]"
-                                                onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 1);">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
+                                            <a href="{% url 'carro:agregar' value.producto_id %}">
+                                                <button type="button" class="btn btn-number" data-type="plus"
+                                                    data-field="quant[2]"
+                                                    onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 1);">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </a>
                                         </span>
                                     </div>
                                 </div>
@@ -105,6 +107,8 @@
                         </div>
                     </div>
                 </div>
+                {% endfor %}
+                {% endif %}
                 <!--DONDE TERMINA EL CONTENIDO DEL CARRITO DE COMPRA-->
 
 
@@ -153,7 +157,7 @@
                                 </div>
                                 <div class="linea lineatotal">
                                     <div class="txt"></div>
-                                    <div class="nro">Total<br>$70.000</div>
+                                    <div class="nro">Total<br>${{importe_total_carro}}</div>
                                 </div>
                             </div>
                         </div>
@@ -169,13 +173,32 @@
 <section>
     <div class="container">
         <div class="row">
-            <div class="col text-center">
-                <a class="btn btn-default big-button mt-5" data-bs-toggle="modal"
-                    data-bs-target="#modalSolicitar">Confirmar y continuar con la compra</a>
+            <div class="col-lg-8">
+                <div id="wallet_container" class="col text-center">
+                    <!-- <button id="checkout-button" class="btn btn-default big-button mt-5" data-bs-toggle="modal"
+                    data-bs-target="#modalSolicitar">Confirmar y continuar con la compra</button> -->
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script>
+        const mp = new MercadoPago('{{ public_key }}');  // Utiliza la clave pública correcta
+
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "{{ preference_id }}",  // Inserta el ID de la preferencia aquí
+            },
+            customization: {
+                texts: {
+                    valueProp: 'smart_option',
+                },
+            },
+        });
+    </script>
 
 
 {% endblock content %}

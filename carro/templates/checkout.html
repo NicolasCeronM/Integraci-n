@@ -1,0 +1,40 @@
+<!-- templates/checkout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <!-- BOTON PARA CONFIRMAR COMPRA -->
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div id="wallet_container" class="col text-center">
+                        <!-- El botón de Mercado Pago se mostrará aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script>
+        const mp = new MercadoPago('{{ public_key }}');  // Utiliza la clave pública correcta
+
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "{{ preference_id }}",  // Inserta el ID de la preferencia aquí
+            },
+            customization: {
+                texts: {
+                    valueProp: 'smart_option',
+                },
+            },
+        });
+    </script>
+</body>
+</html>
