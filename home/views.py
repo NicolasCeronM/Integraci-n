@@ -13,6 +13,7 @@ def home(request):
 
     return render(request,'index.html', data)
 
+
 def admin(request):
 
     productos = Producto.objects.all()

@@ -1,12 +1,181 @@
-<p>esto es el carro</p>
+{%extends 'base.html'%}
+
+{% block content %}
 
 {% if request.session.carro.items %}
-    {% for key, value in request.session.carro.items %}
+{% for key, value in request.session.carro.items %}
 
-    {{value.nombre}}
-    {{value.cantidad}}
-    {{value.precio}}
+{{value.nombre}}
+{{value.cantidad}}
+{{value.precio}}
 
 
-    {% endfor %}
+
+
+{% endfor %}
 {% endif %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <link rel="preconnect" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin>
+    <link href="//fonts.googleapis.com/css2?family=Inter:wght@300;400;500;800&family=Lato:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="https://www.ferremas.com.py/assets/css/slick.css?1684938985" />
+    <link href="https://www.ferremas.com.py/assets/css/bootstrap.min.css?1684938985" rel="stylesheet">
+    <link href="https://www.ferremas.com.py/assets/css/ferremas.css?1684938985" rel="stylesheet">
+    <link rel="stylesheet"
+        href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+    <title>Carrito - Ferre+</title>
+    <meta name="description"
+        content="Ponemos a disposición de los clientes, los productos, las herramientas y maquinarias necesarias para facilitar las tareas ya sean de la vida cotidiana como también para los profesionales de la construcción, industriales, talleres, entre otros." />
+
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="https://www.ferremas.com.py/favicons/apple-touch-icon.png?1684938985">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://www.ferremas.com.py/favicons/favicon-32x32.png?1684938985">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="https://www.ferremas.com.py/favicons/favicon-16x16.png?1684938985">
+    <link rel="manifest" href="https://www.ferremas.com.py/favicons/site.webmanifest?1684938985">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+
+
+
+
+<!--CONTENIDO DEL CARRITO DE COMPRA-->
+<section class="carrito">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <h3 class="subtitulo">Carrito de compras</h3>
+                <div class="caja_info">
+                    <div class="carrito_prod_imagen">
+                        <img src="http://127.0.0.1:8000/media/producto/descarga.jpeg" class="img-fluid" />
+                    </div>
+
+                    <div class="carrito_prod_info">
+                        <p class="small_info">Cód. Producto: 4770
+                        </p>
+                        <h3 class="titulo">ATORNILLADOR AZUL 10MM C/BAT. DE LITIO 10.8V ENERGIZER</h3>
+                    </div>
+
+                    <div class="carrito_prod_numeros">
+                        <a href="javascript:;" class="eliminar_producto"
+                            onClick="deleteProduct('9cfb444411f4916d5989466c581d9517');"><img
+                                src="https://www.ferremas.com.py/assets/img/eliminar.svg" class="img-fluid" /></a>
+
+                        <div class="un_producto_info_bottom">
+                            <div class="un_producto_precio">
+                                <span class="txt">Precio unitario:</span>
+                                <span class="precio">$70.000</span>
+                            </div>
+                            <div class="un_producto_cont_botones">
+                                <div class="un_producto_cantidad">
+                                    <div class="input-group">
+                                        <span class="input-group-btn btn_minus">
+                                            <button type="button" class="btn btn-number" data-type="minus"
+                                                data-field="quant[2]"
+                                                onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 2);">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                            </button>
+                                        </span>
+                                        <input type="text" name="quant[2]" class="form-control input-number" value="1"
+                                            readonly>
+                                        <span class="input-group-btn btn_plus">
+                                            <button type="button" class="btn btn-number" data-type="plus"
+                                                data-field="quant[2]"
+                                                onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 1);">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--DONDE TERMINA EL CONTENIDO DEL CARRITO DE COMPRA-->
+
+
+
+
+
+                <!--METODO DE ENVIO OPCIONAL
+											<h3 class="subtitulo mt-4 mt-md-5">Opción de entrega y pago</h3>
+						<div class="caja_info caja_entrega">
+							<h3 class="titulo">Selecciona una opción para la entrega</h3>
+															<div class="form-check">
+									<input class="form-check-input" type="radio" name="delivery_type" id="delivery_type1" value="1" >
+									<label class="form-check-label" for="delivery_type1">Pasa a retirar</label>
+								</div>
+															<div class="form-check">
+									<input class="form-check-input" type="radio" name="delivery_type" id="delivery_type2" value="2" checked>
+									<label class="form-check-label" for="delivery_type2">Delivery (El costo del delivery puede variar de acuerdo a la zona)</label>
+								</div> 
+                                 METODO DE ENVIO OPCIONAL -->
+
+
+                <!--FORMA DE PAGO-->
+                <div class="caja_info caja_pago mt-4 mt-md-5">
+                    <h3 class="titulo">Selecciona una opción para el pago</h3>
+                    <select class="form-select" id="payment_type" name="payment_type">
+                        <option selected="selected" value="">Forma de Pago</option>
+                        <option value="2">Tarjeta de Crédito </option>
+                        <option value="3">Tarjeta de Debito </option>
+                        <option value="4">Transferencia Bancaria</option>
+                    </select>
+                </div>
+
+
+
+                <!--RESUMEN DE LA COMPRA-->
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="row">
+                    <div class="col-12 col-lg-10 order-1 order-lg-2">
+                        <h3 class="subtitulo  mt-4 mt-md-0">Resumen de la compra</h3>
+                        <div class="caja_info caja_resumen">
+                            <div class="resumen_info">
+                                <div class="linea">
+                                    <div class="txt">Cantidad de producto/s:</div>
+                                    <div class="nro">1</div>
+                                </div>
+                                <div class="linea lineatotal">
+                                    <div class="txt"></div>
+                                    <div class="nro">Total<br>$70.000</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--BOTON PARA CONFIRMAR COMPRA-->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <a class="btn btn-default big-button mt-5" data-bs-toggle="modal"
+                    data-bs-target="#modalSolicitar">Confirmar y continuar con la compra</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock content %}
