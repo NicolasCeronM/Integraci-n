@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'FERREMAS.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ferremas',
+        'USER':'root',
+        'HOST': 'localhost',
+        'PASSWORD':'',
+        'PORT':'3306',
     }
 }
 
@@ -136,5 +140,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 #MERCADO PAGO CREDENCIALES
 
-MERCADO_PAGO_ACCESS_TOKEN = 'TEST-968854795969864-051913-0890b4369c4f34c117bdadfb267a3d51-693713626'
-MERCADO_PAGO_PUBLIC_KEY = 'TEST-adaf101c-c1b0-4c20-a2c4-6763fd4a877e'
+MERCADO_PAGO_ACCESS_TOKEN = 'APP_USR-2938212439655655-051917-ea25daf97ad7aad4e7c1842419584025-1818813335'
+MERCADO_PAGO_PUBLIC_KEY = 'APP_USR-ba6a909c-395f-42ad-babe-fdb01eafb0db'

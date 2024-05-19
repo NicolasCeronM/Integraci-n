@@ -34,7 +34,7 @@ def vista_carro(request):
             "email": "test_user@test.com"
         },
         "back_urls": {
-            "success": "http://localhost:8000/success/",
+            "success": "http://localhost:8000/",
             "failure": "http://localhost:8000/failure/",
             "pending": "http://localhost:8000/pending/"
         },

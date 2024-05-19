@@ -17,9 +17,11 @@ def home(request):
 def admin(request):
 
     productos = Producto.objects.all()
+    categorias = Categoria.objects.all()
 
     data = {
-        'productos': productos
+        'productos': productos,
+        'categorias': categorias
     }
 
 

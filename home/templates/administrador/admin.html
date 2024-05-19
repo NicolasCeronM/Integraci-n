@@ -141,10 +141,9 @@
 
                         <select class="form-select mb-3" aria-label="Default select example" name="seccion">
                             <option selected>Seleccione</option>
-                            <option value="pulentoi">pulentoi</option>
-                            <option value="medicamento">Medicamento</option>
-                            <option value="comida">Comida</option>
-                            <option value="ropa">Ropa</option>
+                            {% for categoria in categorias %}
+                            <option value="{{categoria.nombre}}">{{categoria.nombre}}</option>
+                            {% endfor %}
                         </select>
 
                         <div class=" mb-3">
