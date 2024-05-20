@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'producto',
     'API',
     'carro',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

@@ -1,3 +1,6 @@
+Ingresa con las credenciales de usuario Comprador en el navegador 
+donde se compra
+
 Mastercard
 5416 7526 0258 2580
 123
