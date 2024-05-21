@@ -1,0 +1,19 @@
+<!-- <h3 class="titulo">Convertir Moneda</h3> 
+<form method="POST" action="{% url 'carro:carro' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="moneda">Seleccione Moneda:</label>
+        <select class="form-select" id="moneda" name="moneda">
+            {% for code, name in monedas_disponibles %}
+            <option value="{{ code }}">{{ name }} ({{ code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Convertir</button>
+</form>
+{% if numero_convertido %}
+<div class="mt-4">
+    <h4>Resultado:</h4>
+    <p>Cantidad Convertida: {{ numero_convertido }} {{ moneda_seleccionada }}</p>
+</div>
+{% endif %} -->

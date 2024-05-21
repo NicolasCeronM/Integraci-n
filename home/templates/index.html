@@ -2,6 +2,38 @@
 {% load static %}
 {% block content %}
 
+<!--todo Sub Heder-->
+<div class="">
+    <div class="row">
+
+        <div class="col-12">
+
+            <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                aria-controls="offcanvasExample">
+                Link with href
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Categorias</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        {% for categoria in categorias %}
+        <div>
+            <a href="">{{categoria.nombre}}</a>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+
 
 <!--todo| CARRUSEL PRINCIPAL |-->
 <div id="carouselExampleInterval" class="carousel slide mt-3" data-bs-ride="carousel">
@@ -37,6 +69,8 @@
 <div class="text-center p-5">
     <h1>Productos</h1>
 </div>
+
+{{result}}
 
 
 

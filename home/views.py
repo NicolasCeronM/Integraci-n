@@ -1,14 +1,20 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from producto.models import Producto, Categoria
+# import bcchapi
+# import numpy as np
+import requests
 
-# Create your views here.
+# Create your views here.                                                          
 
 def home(request):
 
     productos = Producto.objects.all()
+    categorias = Categoria.objects.all()
+
 
     data = {
-        'productos': productos
+        'productos': productos,
+        'categorias': categorias
     }
 
     return render(request,'index.html', data)

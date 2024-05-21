@@ -6,7 +6,6 @@ app_name = "carro"
 urlpatterns = [
 
     path('', views.vista_carro, name='carro'),
-
     path('agregar/<int:producto_id>',views.agregar_producto, name='agregar'),
     path('eliminar/<int:producto_id>',views.eliminiar_producto, name='eliminar'),
     path('restar/<int:producto_id>',views.restar_producto, name='restar'),

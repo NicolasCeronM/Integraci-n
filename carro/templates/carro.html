@@ -1,5 +1,7 @@
 {%extends 'base.html'%}
 
+{% load static %}
+
 {% block content %}
 
 <!doctype html>
@@ -34,6 +36,52 @@
     <link rel="manifest" href="https://www.ferremas.com.py/favicons/site.webmanifest?1684938985">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiKey = 'ac0d4ddc6eb67e5b634f3c85';  // Asegúrate de reemplazar esto con tu clave de API
+            const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/CLP`;
+            const countryUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/codes`;
+
+            // Obtener tasas de cambio y nombres de países cuando se carga la página
+            Promise.all([
+                fetch(url).then(response => response.json()),
+                fetch(countryUrl).then(response => response.json())
+            ])
+            .then(([rateData, countryData]) => {
+                const select = document.getElementById('currency-select');
+                const rates = rateData.conversion_rates;
+                const countryCodes = countryData.supported_codes;
+
+                // Crear un mapa de códigos de moneda a nombres de países
+                const countryMap = {};
+                countryCodes.forEach(([currencyCode, countryName]) => {
+                    countryMap[currencyCode] = countryName;
+                });
+
+                // Llenar el select con las opciones de monedas, nombres de países y banderas
+                for (let currency in rates) {
+                    let option = document.createElement('option');
+                    option.value = rates[currency];
+                    option.text = `${currency} - ${countryMap[currency] || 'Unknown Country'}`;
+                    option.dataset.currency = currency;  // Guardar el código de moneda en un dataset
+                    select.appendChild(option);
+                }
+            });
+
+            // Convertir el importe total cuando se selecciona una moneda
+            document.getElementById('currency-select').addEventListener('change', function() {
+                const rate = parseFloat(this.value);
+                const totalElements = document.querySelectorAll('.importe-total');
+                totalElements.forEach(element => {
+                    const total = parseFloat(element.dataset.value);
+                    const convertedTotal = (total * rate).toFixed(2);
+                    const selectedCurrency = this.options[this.selectedIndex].dataset.currency;
+                    element.textContent = `${convertedTotal} ${selectedCurrency}`;
+                });
+            });
+        });
+    </script>
 </head>
 
 
@@ -130,15 +178,18 @@
                                  METODO DE ENVIO OPCIONAL -->
 
 
-                <!--FORMA DE PAGO-->
-                <div class="caja_info caja_pago mt-4 mt-md-5">
-                    <h3 class="titulo">Selecciona una opción para el pago</h3>
-                    <select class="form-select" id="payment_type" name="payment_type">
-                        <option selected="selected" value="">Forma de Pago</option>
-                        <option value="2">Tarjeta de Crédito </option>
-                        <option value="3">Tarjeta de Debito </option>
-                        <option value="4">Transferencia Bancaria</option>
+                <!--Cambio de moneda-->
+                <div class="caja_info caja_pago mt-4 mt-md-5 container">
+
+                    <h1>Cambio de moneda</h1>
+                    <p>Total actual en CLP: <span id="importe-total" data-value="{{ importe_total_carro }}">{{ importe_total_carro }}</span></p>
+                    <label for="currency-select">Selecciona una moneda:</label>
+                    <select id="currency-select">
+                        <option value="">Selecciona una moneda</option>
                     </select>
+                    <p>Importe Total Convertido: <span id="converted-importe-total"></span></p>
+
+
                 </div>
 
 
@@ -155,9 +206,18 @@
                                     <div class="txt">Cantidad de producto/s:</div>
                                     <div class="nro">1</div>
                                 </div>
-                                <div class="linea lineatotal">
-                                    <div class="txt"></div>
-                                    <div class="nro">Total<br>${{importe_total_carro}}</div>
+                                <div class="linea lineatotal row">
+                                    <div class="txt col-12">
+                                        {% if request.session.carro.items %}
+                                        {% for key, value in request.session.carro.items %}
+                                        <p class="fs-6">{{value.nombre}} x {{value.cantidad}}</p>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="nro linea lineatotal">
+                                        Total<br>${{importe_total_carro}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -183,22 +243,48 @@
     </div>
 </section>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener tasas de cambio cuando se carga la página
+        fetch('/get_exchange_rates/')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('currency-select');
+                const rates = data.conversion_rates;
+                
+                // Llenar el select con las opciones de monedas
+                for (let currency in rates) {
+                    let option = document.createElement('option');
+                    option.value = rates[currency];
+                    option.text = currency;
+                    select.appendChild(option);
+                }
+            });
 
-<script src="https://sdk.mercadopago.com/js/v2"></script>
-    <script>
-        const mp = new MercadoPago('{{ public_key }}');  // Utiliza la clave pública correcta
-
-        mp.bricks().create("wallet", "wallet_container", {
-            initialization: {
-                preferenceId: "{{ preference_id }}",  // Inserta el ID de la preferencia aquí
-            },
-            customization: {
-                texts: {
-                    valueProp: 'smart_option',
-                },
-            },
+        // Convertir el importe total cuando se selecciona una moneda
+        document.getElementById('currency-select').addEventListener('change', function() {
+            const rate = parseFloat(this.value);
+            const total = parseFloat(document.getElementById('importe-total').dataset.value);
+            const convertedTotal = (total * rate).toFixed(2);
+            document.getElementById('converted-importe-total').textContent = convertedTotal;
         });
-    </script>
+    });
+</script>
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+    const mp = new MercadoPago('{{ public_key }}');  // Utiliza la clave pública correcta
+
+    mp.bricks().create("wallet", "wallet_container", {
+        initialization: {
+            preferenceId: "{{ preference_id }}",  // Inserta el ID de la preferencia aquí
+        },
+        customization: {
+            texts: {
+                valueProp: 'smart_option',
+            },
+        },
+    });
+</script>
 
 
 {% endblock content %}
