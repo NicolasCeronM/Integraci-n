@@ -1,0 +1,23 @@
+Ingresa con las credenciales de usuario Comprador en el navegador 
+donde se compra
+
+DATOS DE COMPRADOR PRUEBA:
+Comprador
+TESTUSER70815237
+goOwiwC7PP
+19/05/2024
+
+Mastercard
+5416 7526 0258 2580
+123
+11/25
+
+Visa
+4168 8188 4444 7115
+123
+11/25
+
+American Express
+3757 781744 61804
+1234
+11/25

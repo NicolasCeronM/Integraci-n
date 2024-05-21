@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'producto',
     'API',
+    'carro',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'carro.context_processor.importe_total_carro',
             ],
         },
     },
@@ -79,8 +82,12 @@ WSGI_APPLICATION = 'FERREMAS.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ferremas',
+        'USER':'root',
+        'HOST': 'localhost',
+        'PASSWORD':'',
+        'PORT':'3306',
     }
 }
 
@@ -131,3 +138,8 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+#MERCADO PAGO CREDENCIALES
+
+MERCADO_PAGO_ACCESS_TOKEN = 'APP_USR-2938212439655655-051917-ea25daf97ad7aad4e7c1842419584025-1818813335'
+MERCADO_PAGO_PUBLIC_KEY = 'APP_USR-ba6a909c-395f-42ad-babe-fdb01eafb0db'

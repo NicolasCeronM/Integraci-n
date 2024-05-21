@@ -56,25 +56,29 @@
 
                     <tbody>
 
-                        {% if entity %}
-                        {% for i in entity %}
+                        {% if productos %}
+                        {% for i in productos %}
                         <tr>
                             <th class="">{{i.id}}</th>
                             {% if i.imagen %}
                             <td class="col"><img src="{{i.imagen.url}}" alt="" class="img-fluid"></td>
+                            {% else %}
+                            
+                            <td class="col"><img src="media/producto/default.jpg" alt="" class="img-fluid"></td>
                             {% endif %}
+                            
                             <td class="col">{{i.nombre}}</td>
                             <td class="col">$ {{i.precio}}</td>
                             <td class="col">{{i.descripcion}}</td>
-                            <td class="col">{{i.seccion}}</td>
+                            <td class="col">{{i.categoria}}</td>
                             <td class="col">{{i.stock}}</td>
                             <td class="col">{{i.created}}</td>
                             <td>
 
-                                <a href="#"> <button class="btn btn-danger mb-1"><i
+                                <a href="{% url 'home:eliminar' i.id %}"> <button class="btn btn-danger mb-1"><i
                                             class="fa-solid fa-trash-can"></i></button></a>
 
-                                <a href="{% url 'admin_page:editar' i.id%}"> <button class="btn btn-primary mb-1"><i
+                                <a href="#"> <button class="btn btn-primary mb-1"><i
                                             class="fa-regular fa-pen-to-square"></i></button></a>
                             </td>
                         </tr>
@@ -137,10 +141,9 @@
 
                         <select class="form-select mb-3" aria-label="Default select example" name="seccion">
                             <option selected>Seleccione</option>
-                            <option value="juguete">Juguete</option>
-                            <option value="medicamento">Medicamento</option>
-                            <option value="comida">Comida</option>
-                            <option value="ropa">Ropa</option>
+                            {% for categoria in categorias %}
+                            <option value="{{categoria.nombre}}">{{categoria.nombre}}</option>
+                            {% endfor %}
                         </select>
 
                         <div class=" mb-3">

@@ -1,0 +1,290 @@
+{%extends 'base.html'%}
+
+{% load static %}
+
+{% block content %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <link rel="preconnect" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin>
+    <link href="//fonts.googleapis.com/css2?family=Inter:wght@300;400;500;800&family=Lato:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="https://www.ferremas.com.py/assets/css/slick.css?1684938985" />
+    <link href="https://www.ferremas.com.py/assets/css/bootstrap.min.css?1684938985" rel="stylesheet">
+    <link href="https://www.ferremas.com.py/assets/css/ferremas.css?1684938985" rel="stylesheet">
+    <link rel="stylesheet"
+        href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+    <title>Carrito - Ferre+</title>
+    <meta name="description"
+        content="Ponemos a disposición de los clientes, los productos, las herramientas y maquinarias necesarias para facilitar las tareas ya sean de la vida cotidiana como también para los profesionales de la construcción, industriales, talleres, entre otros." />
+
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="https://www.ferremas.com.py/favicons/apple-touch-icon.png?1684938985">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://www.ferremas.com.py/favicons/favicon-32x32.png?1684938985">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="https://www.ferremas.com.py/favicons/favicon-16x16.png?1684938985">
+    <link rel="manifest" href="https://www.ferremas.com.py/favicons/site.webmanifest?1684938985">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiKey = 'ac0d4ddc6eb67e5b634f3c85';  // Asegúrate de reemplazar esto con tu clave de API
+            const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/CLP`;
+            const countryUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/codes`;
+
+            // Obtener tasas de cambio y nombres de países cuando se carga la página
+            Promise.all([
+                fetch(url).then(response => response.json()),
+                fetch(countryUrl).then(response => response.json())
+            ])
+            .then(([rateData, countryData]) => {
+                const select = document.getElementById('currency-select');
+                const rates = rateData.conversion_rates;
+                const countryCodes = countryData.supported_codes;
+
+                // Crear un mapa de códigos de moneda a nombres de países
+                const countryMap = {};
+                countryCodes.forEach(([currencyCode, countryName]) => {
+                    countryMap[currencyCode] = countryName;
+                });
+
+                // Llenar el select con las opciones de monedas, nombres de países y banderas
+                for (let currency in rates) {
+                    let option = document.createElement('option');
+                    option.value = rates[currency];
+                    option.text = `${currency} - ${countryMap[currency] || 'Unknown Country'}`;
+                    option.dataset.currency = currency;  // Guardar el código de moneda en un dataset
+                    select.appendChild(option);
+                }
+            });
+
+            // Convertir el importe total cuando se selecciona una moneda
+            document.getElementById('currency-select').addEventListener('change', function() {
+                const rate = parseFloat(this.value);
+                const totalElements = document.querySelectorAll('.importe-total');
+                totalElements.forEach(element => {
+                    const total = parseFloat(element.dataset.value);
+                    const convertedTotal = (total * rate).toFixed(2);
+                    const selectedCurrency = this.options[this.selectedIndex].dataset.currency;
+                    element.textContent = `${convertedTotal} ${selectedCurrency}`;
+                });
+            });
+        });
+    </script>
+</head>
+
+
+
+
+
+<!--CONTENIDO DEL CARRITO DE COMPRA-->
+<section class="carrito">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8">
+
+                <!--Falta boton para vaciar carro-->
+
+                <a href="{% url 'carro:limpiar' %}">Vaciar carro</a>
+
+                <!--------------------------------------------------->
+
+                <h3 class="subtitulo">Carrito de compras</h3>
+
+                {% if request.session.carro.items %}
+                {% for key, value in request.session.carro.items %}
+
+                <div class="caja_info">
+                    <div class="carrito_prod_imagen">
+                        <img src="{{value.imagen}}" class="img-fluid" />
+                    </div>
+
+                    <div class="carrito_prod_info">
+                        <p class="small_info">Cód. Producto: {{value.producto_id}}
+                        </p>
+                        <h3 class="titulo">{{value.nombre}}</h3>
+                    </div>
+
+                    <div class="carrito_prod_numeros">
+                        <a href="{% url 'carro:eliminar' value.producto_id %}" class="eliminar_producto"
+                            onClick="deleteProduct('9cfb444411f4916d5989466c581d9517');"><img
+                                src="https://www.ferremas.com.py/assets/img/eliminar.svg" class="img-fluid" /></a>
+
+                        <div class="un_producto_info_bottom">
+                            <div class="un_producto_precio">
+                                <span class="txt">Precio unitario:</span>
+                                <span class="precio">${{value.precio}}</span>
+                            </div>
+                            <div class="un_producto_cont_botones">
+                                <div class="un_producto_cantidad">
+                                    <div class="input-group">
+                                        <span class="input-group-btn btn_minus">
+                                            <a href="{% url 'carro:restar' value.producto_id %}">
+                                                <button type="button" class="btn btn-number" data-type="minus"
+                                                    data-field="quant[2]"
+                                                    onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 2);">
+                                                    <span class="glyphicon glyphicon-minus"></span>
+                                                </button>
+                                            </a>
+                                        </span>
+                                        <input type="text" name="quant[2]" class="form-control input-number"
+                                            value="{{value.cantidad}}" readonly>
+                                        <span class="input-group-btn btn_plus">
+                                            <a href="{% url 'carro:agregar' value.producto_id %}">
+                                                <button type="button" class="btn btn-number" data-type="plus"
+                                                    data-field="quant[2]"
+                                                    onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 1);">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                <!--DONDE TERMINA EL CONTENIDO DEL CARRITO DE COMPRA-->
+
+
+
+
+
+                <!--METODO DE ENVIO OPCIONAL
+											<h3 class="subtitulo mt-4 mt-md-5">Opción de entrega y pago</h3>
+						<div class="caja_info caja_entrega">
+							<h3 class="titulo">Selecciona una opción para la entrega</h3>
+															<div class="form-check">
+									<input class="form-check-input" type="radio" name="delivery_type" id="delivery_type1" value="1" >
+									<label class="form-check-label" for="delivery_type1">Pasa a retirar</label>
+								</div>
+															<div class="form-check">
+									<input class="form-check-input" type="radio" name="delivery_type" id="delivery_type2" value="2" checked>
+									<label class="form-check-label" for="delivery_type2">Delivery (El costo del delivery puede variar de acuerdo a la zona)</label>
+								</div> 
+                                 METODO DE ENVIO OPCIONAL -->
+
+
+                <!--Cambio de moneda-->
+                <div class="caja_info caja_pago mt-4 mt-md-5 container">
+
+                    <h1>Cambio de moneda</h1>
+                    <p>Total actual en CLP: <span id="importe-total" data-value="{{ importe_total_carro }}">{{ importe_total_carro }}</span></p>
+                    <label for="currency-select">Selecciona una moneda:</label>
+                    <select id="currency-select">
+                        <option value="">Selecciona una moneda</option>
+                    </select>
+                    <p>Importe Total Convertido: <span id="converted-importe-total"></span></p>
+
+
+                </div>
+
+
+
+                <!--RESUMEN DE LA COMPRA-->
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="row">
+                    <div class="col-12 col-lg-10 order-1 order-lg-2">
+                        <h3 class="subtitulo  mt-4 mt-md-0">Resumen de la compra</h3>
+                        <div class="caja_info caja_resumen">
+                            <div class="resumen_info">
+                                <div class="linea">
+                                    <div class="txt">Cantidad de producto/s:</div>
+                                    <div class="nro">1</div>
+                                </div>
+                                <div class="linea lineatotal row">
+                                    <div class="txt col-12">
+                                        {% if request.session.carro.items %}
+                                        {% for key, value in request.session.carro.items %}
+                                        <p class="fs-6">{{value.nombre}} x {{value.cantidad}}</p>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="nro linea lineatotal">
+                                        Total<br>${{importe_total_carro}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--BOTON PARA CONFIRMAR COMPRA-->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div id="wallet_container" class="col text-center">
+                    <!-- <button id="checkout-button" class="btn btn-default big-button mt-5" data-bs-toggle="modal"
+                    data-bs-target="#modalSolicitar">Confirmar y continuar con la compra</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener tasas de cambio cuando se carga la página
+        fetch('/get_exchange_rates/')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('currency-select');
+                const rates = data.conversion_rates;
+                
+                // Llenar el select con las opciones de monedas
+                for (let currency in rates) {
+                    let option = document.createElement('option');
+                    option.value = rates[currency];
+                    option.text = currency;
+                    select.appendChild(option);
+                }
+            });
+
+        // Convertir el importe total cuando se selecciona una moneda
+        document.getElementById('currency-select').addEventListener('change', function() {
+            const rate = parseFloat(this.value);
+            const total = parseFloat(document.getElementById('importe-total').dataset.value);
+            const convertedTotal = (total * rate).toFixed(2);
+            document.getElementById('converted-importe-total').textContent = convertedTotal;
+        });
+    });
+</script>
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+    const mp = new MercadoPago('{{ public_key }}');  // Utiliza la clave pública correcta
+
+    mp.bricks().create("wallet", "wallet_container", {
+        initialization: {
+            preferenceId: "{{ preference_id }}",  // Inserta el ID de la preferencia aquí
+        },
+        customization: {
+            texts: {
+                valueProp: 'smart_option',
+            },
+        },
+    });
+</script>
+
+
+{% endblock content %}
