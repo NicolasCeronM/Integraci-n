@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -80,14 +81,22 @@ WSGI_APPLICATION = 'FERREMAS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'ferremas',
+#        'USER':'root',
+#        'HOST': 'localhost',
+#        'PASSWORD':'',
+#        'PORT':'3306',
+#    }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ferremas',
-        'USER':'root',
-        'HOST': 'localhost',
-        'PASSWORD':'',
-        'PORT':'3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
     }
 }
 
@@ -133,13 +142,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#Imagenes 
-import os
+# Imagenes
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-#MERCADO PAGO CREDENCIALES
+# MERCADO PAGO CREDENCIALES
 
 MERCADO_PAGO_ACCESS_TOKEN = 'APP_USR-2938212439655655-051917-ea25daf97ad7aad4e7c1842419584025-1818813335'
 MERCADO_PAGO_PUBLIC_KEY = 'APP_USR-ba6a909c-395f-42ad-babe-fdb01eafb0db'

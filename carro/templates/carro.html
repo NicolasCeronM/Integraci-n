@@ -38,7 +38,7 @@
     <meta name="theme-color" content="#ffffff">
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const apiKey = 'ac0d4ddc6eb67e5b634f3c85';  // Asegúrate de reemplazar esto con tu clave de API
             const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/CLP`;
             const countryUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/codes`;
@@ -48,29 +48,29 @@
                 fetch(url).then(response => response.json()),
                 fetch(countryUrl).then(response => response.json())
             ])
-            .then(([rateData, countryData]) => {
-                const select = document.getElementById('currency-select');
-                const rates = rateData.conversion_rates;
-                const countryCodes = countryData.supported_codes;
+                .then(([rateData, countryData]) => {
+                    const select = document.getElementById('currency-select');
+                    const rates = rateData.conversion_rates;
+                    const countryCodes = countryData.supported_codes;
 
-                // Crear un mapa de códigos de moneda a nombres de países
-                const countryMap = {};
-                countryCodes.forEach(([currencyCode, countryName]) => {
-                    countryMap[currencyCode] = countryName;
+                    // Crear un mapa de códigos de moneda a nombres de países
+                    const countryMap = {};
+                    countryCodes.forEach(([currencyCode, countryName]) => {
+                        countryMap[currencyCode] = countryName;
+                    });
+
+                    // Llenar el select con las opciones de monedas, nombres de países y banderas
+                    for (let currency in rates) {
+                        let option = document.createElement('option');
+                        option.value = rates[currency];
+                        option.text = `${currency} - ${countryMap[currency] || 'Unknown Country'}`;
+                        option.dataset.currency = currency;  // Guardar el código de moneda en un dataset
+                        select.appendChild(option);
+                    }
                 });
 
-                // Llenar el select con las opciones de monedas, nombres de países y banderas
-                for (let currency in rates) {
-                    let option = document.createElement('option');
-                    option.value = rates[currency];
-                    option.text = `${currency} - ${countryMap[currency] || 'Unknown Country'}`;
-                    option.dataset.currency = currency;  // Guardar el código de moneda en un dataset
-                    select.appendChild(option);
-                }
-            });
-
             // Convertir el importe total cuando se selecciona una moneda
-            document.getElementById('currency-select').addEventListener('change', function() {
+            document.getElementById('currency-select').addEventListener('change', function () {
                 const rate = parseFloat(this.value);
                 const totalElements = document.querySelectorAll('.importe-total');
                 totalElements.forEach(element => {
@@ -83,6 +83,42 @@
         });
     </script>
 </head>
+<!--estylo de cambio de moneda-->
+<style>
+    body {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: black;
+    }
+
+    .caja_pago {
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .currency-select-container {
+        margin-top: 20px;
+    }
+
+    .currency-select-container label {
+        font-weight: bold;
+    }
+
+    .currency-select-container select {
+        margin-top: 10px;
+    }
+
+    .result-container {
+        margin-top: 20px;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+</style>
+</head>
+<!--termino cambio de moneda-->
 
 
 
@@ -96,11 +132,18 @@
 
                 <!--Falta boton para vaciar carro-->
 
-                <a href="{% url 'carro:limpiar' %}">Vaciar carro</a>
+                <div class="container mt-5">
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'carro:limpiar' %}" type="button"
+                            class="btn subtitulo  mt-4 mt-md-0 badge text-bg-light">Vaciar carro</a>
+                    </div>
+                </div>
+
+
 
                 <!--------------------------------------------------->
 
-                <h3 class="subtitulo">Carrito de compras</h3>
+                <span class="subtitulo  mt-4 mt-md-0 badge text-bg-light">Carrito de Compras</span>
 
                 {% if request.session.carro.items %}
                 {% for key, value in request.session.carro.items %}
@@ -178,54 +221,80 @@
                                  METODO DE ENVIO OPCIONAL -->
 
 
-                <!--Cambio de moneda-->
-                <div class="caja_info caja_pago mt-4 mt-md-5 container">
-
-                    <h1>Cambio de moneda</h1>
-                    <p>Total actual en CLP: <span id="importe-total" data-value="{{ importe_total_carro }}">{{ importe_total_carro }}</span></p>
-                    <label for="currency-select">Selecciona una moneda:</label>
-                    <select id="currency-select">
-                        <option value="">Selecciona una moneda</option>
-                    </select>
-                    <p>Importe Total Convertido: <span id="converted-importe-total"></span></p>
-
-
-                </div>
 
 
 
-                <!--RESUMEN DE LA COMPRA-->
-            </div>
-            <div class="col-12 col-lg-4">
-                <div class="row">
-                    <div class="col-12 col-lg-10 order-1 order-lg-2">
-                        <h3 class="subtitulo  mt-4 mt-md-0">Resumen de la compra</h3>
-                        <div class="caja_info caja_resumen">
-                            <div class="resumen_info">
-                                <div class="linea">
-                                    <div class="txt">Cantidad de producto/s:</div>
-                                    <div class="nro">1</div>
-                                </div>
-                                <div class="linea lineatotal row">
-                                    <div class="txt col-12">
-                                        {% if request.session.carro.items %}
-                                        {% for key, value in request.session.carro.items %}
-                                        <p class="fs-6">{{value.nombre}} x {{value.cantidad}}</p>
-                                        {% endfor %}
-                                        {% endif %}
-                                    </div>
 
-                                    <div class="nro linea lineatotal">
-                                        Total<br>${{importe_total_carro}}
-                                    </div>
-                                </div>
+
+
+
+
+                <!--cambio de moneda mas atractivo-->
+
+                <body>
+
+                    <div class="container mt-5">
+                        <div class="caja_info caja_pago">
+                            <h1 class="mb-4">Cambio de moneda</h1>
+                            <p class="mb-3">Total actual en CLP:
+                                <span id="importe-total" class="badge bg-primary"
+                                    data-value="{{ importe_total_carro }}">{{
+                                    importe_total_carro }}</span>
+                            </p>
+                            <div class="currency-select-container">
+                                <label for="currency-select" class="form-label">Selecciona una moneda:</label>
+                                <select id="currency-select" class="form-select">
+                                    <option value="">Selecciona una moneda</option>
+                                </select>
                             </div>
+                            <div class="result-container mt-4">
+                                <p>Importe Total Convertido:
+                                    <span id="converted-importe-total" class="badge bg-success"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+                </body>
+
+</html>
+<!--termino-->
+
+
+
+<!--RESUMEN DE LA COMPRA-->
+</div>
+<div class="col-12 col-lg-4">
+    <div class="row">
+        <div class="col-12 col-lg-10 order-1 order-lg-2">
+            <span class="subtitulo  mt-4 mt-md-0 badge text-bg-light">Resumen de compra</span>
+            <div class="caja_info caja_resumen">
+                <div class="resumen_info">
+                    <div class="linea">
+                        <div class="txt">Cantidad de producto/s:</div>
+                        <div class="nro">1</div>
+                    </div>
+                    <div class="linea lineatotal row">
+                        <div class="txt col-12">
+                            {% if request.session.carro.items %}
+                            {% for key, value in request.session.carro.items %}
+                            <p class="fs-6">{{value.nombre}} x {{value.cantidad}}</p>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="nro linea lineatotal">
+                            Total<br>${{importe_total_carro}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
+</div>
 </section>
 
 
@@ -244,14 +313,14 @@
 </section>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Obtener tasas de cambio cuando se carga la página
         fetch('/get_exchange_rates/')
             .then(response => response.json())
             .then(data => {
                 const select = document.getElementById('currency-select');
                 const rates = data.conversion_rates;
-                
+
                 // Llenar el select con las opciones de monedas
                 for (let currency in rates) {
                     let option = document.createElement('option');
@@ -262,7 +331,7 @@
             });
 
         // Convertir el importe total cuando se selecciona una moneda
-        document.getElementById('currency-select').addEventListener('change', function() {
+        document.getElementById('currency-select').addEventListener('change', function () {
             const rate = parseFloat(this.value);
             const total = parseFloat(document.getElementById('importe-total').dataset.value);
             const convertedTotal = (total * rate).toFixed(2);
