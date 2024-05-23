@@ -132,12 +132,16 @@
 
                 <!--Falta boton para vaciar carro-->
 
+                {% if request.session.carro.items %}
+
                 <div class="container mt-5">
                     <div class="d-flex justify-content-end">
                         <a href="{% url 'carro:limpiar' %}" type="button"
                             class="btn subtitulo  mt-4 mt-md-0 badge text-bg-light">Vaciar carro</a>
                     </div>
                 </div>
+
+                {%endif%}
 
 
 
@@ -199,6 +203,12 @@
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+
+                <div class="caja_info">
+                    <p class="mt-4 mt-md-0 badge text-bg-light p-6 fs-1">Carrito de compras vacio</p>
+                </div>
+
                 {% endif %}
                 <!--DONDE TERMINA EL CONTENIDO DEL CARRITO DE COMPRA-->
 
@@ -238,8 +248,7 @@
                             <h1 class="mb-4">Cambio de moneda</h1>
                             <p class="mb-3">Total actual en CLP:
                                 <span id="importe-total" class="badge bg-primary"
-                                    data-value="{{ importe_total_carro }}">{{
-                                    importe_total_carro }}</span>
+                                    data-value="{{ importe_total_carro }}">{{importe_total_carro }}</span>
                             </p>
                             <div class="currency-select-container">
                                 <label for="currency-select" class="form-label">Selecciona una moneda:</label>

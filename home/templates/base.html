@@ -99,12 +99,9 @@
 
             </ul>
             </form>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            
             <form class="d-flex ms-4">
-                <a href="{% url 'carro:carro' %}" class="btn btn-outline-dark" type="submit">
+                <a href="{% url 'carro:carro' %}" class="btn btn-dark" type="submit">
                     <i class="bi-cart-fill me-1"></i>
                     Carro
                     <span class="badge bg-dark text-white ms-1 rounded-pill">{{cantidad_total_carro}}</span>

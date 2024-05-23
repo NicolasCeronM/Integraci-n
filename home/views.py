@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from producto.models import Producto, Categoria
-# import bcchapi
-# import numpy as np
-import requests
-
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.conf import settings
+from django.contrib import messages
 # Create your views here.
 
 
@@ -68,4 +68,37 @@ def eliminar(request, id):
 
 # seccion de contacto
 def contacto(request):
-    return render(request, 'contacto/contacto.html')
+
+    if request.method =='POST':
+
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        template = render_to_string('Contacto/email_cointacto.html', {
+            'name':name,
+            'email':email,
+            'message':message
+        })
+
+        email = EmailMessage(
+            subject,
+            template,
+            settings.EMAIL_HOST_USER,
+            ['nicolas134b@gmail.com']
+        )
+
+        email.content_subtype = 'html'
+
+        email.fail_silently = False
+        email.send()
+
+        messages.success(request,'Se ha enviado el correo')
+
+        return redirect(to='home:contacto')
+
+        
+
+
+    return render(request, 'contacto/Contacto.html', )

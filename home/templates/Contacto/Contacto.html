@@ -2,7 +2,6 @@
 
 {% block content %}
 
-
 <head>
     <!-- Enlace a Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -84,6 +83,8 @@
             /* Cambia esto al color que desees */
         }
     </style>
+
+    
 </head>
 
 <body>
@@ -109,21 +110,38 @@
             </div>
             <div class="col-md-8 p-5">
 
-                <form class="mt-4">
+                
+                {% if messages %}
+                    
+                    {% for message  in messages  %}
+
+                    <div class="alert alert-success" role="alert">
+                        {{message}}
+                      </div>
+                        
+                    {% endfor %}
+                        
+                    
+                {% endif %}
+                    
+
+                <form class="mt-4" method="POST" action="{% url 'home:contacto' %}">
+
+                    {% csrf_token %}
                     <div class="input-box">
-                        <input type="text" class="form-control" placeholder="Nombre y apellido" required>
+                        <input type="text" class="form-control" placeholder="Nombre y apellido" name="name" required>
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <div class="input-box">
-                        <input type="email" class="form-control" required placeholder="Correo electrónico">
+                        <input type="email" class="form-control" required placeholder="Correo electrónico" name="email">
                         <i class="fa-solid fa-envelope"></i>
                     </div>
                     <div class="input-box">
-                        <input type="text" class="form-control" placeholder="Asunto">
+                        <input type="text" class="form-control" placeholder="Asunto" name="subject">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </div>
                     <div class="input-box">
-                        <textarea class="form-control" placeholder="Escribe tu mensaje..."></textarea>
+                        <textarea class="form-control" placeholder="Escribe tu mensaje..." name="message"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Enviar mensaje</button>
                 </form>
