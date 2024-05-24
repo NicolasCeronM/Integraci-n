@@ -5,138 +5,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="#">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!--diseño boton y su conjunto-->
+    <style>
+        .btn-custom {
+            background-color: #c29904;
+            border: none;
+            color: rgb(43, 25, 25);
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #c7890c;
+            transform: scale(1.05);
+        }
+
+        .offcanvas-custom {
+            background-color: #f8f9fa;
+            /* Color de fondo  */
+            color: #343a40;
+            /* Texto */
+        }
+
+        .offcanvas-header-custom {
+            background-color: #975e08;
+            /* Fondo interno */
+            color: rgb(255, 245, 245);
+        }
+
+        .offcanvas-body-custom a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #e9ecef;
+            /* Fondo interno de las casillas */
+            color: #343a40;
+            /* Texto */
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .offcanvas-body-custom a:hover {
+            background-color: #457cb4;
+            /* Fondo */
+        }
+    </style>
+    <!--fin de diseño boton-->
+
+    <!--color del header-->
+    <style>
+        .navbar-custom {
+            background-color: #d88415;
+
+        }
+    </style>
+    <!--fin-->
+
 </head>
 
-<body>
+<body style="background-image: url('../static/imagenes/fondopg.jpg');"></body>
 
-    <!--empieza header-->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home:home' %}">Ferre+</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contacto</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Categoria
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">martillo</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
+<!--empieza header-->
+<nav class="navbar navbar-expand-lg navbar-custom">
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home:administrador' %}">Administrador</a>
-                    </li>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home:home' %}"> <img src="../static/imagenes/logofl.jpeg" alt="Logo"
+                width="120px"> </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                </ul>
-                </form>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-                <form class="d-flex ms-4">
-                    <a href="{% url 'carro:carro' %}" class="btn btn-outline-dark" type="submit">
-                        <i class="bi-cart-fill me-1"></i>
-                        Carro
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">{{cantidad_total_carro}}</span>
-                    </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home:contacto' %}">Contacto</a>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home:administrador' %}">Administrador</a>
+                </li>
+
+            </ul>
+            </form>
+            
+            <form class="d-flex ms-4">
+                <a href="{% url 'carro:carro' %}" class="btn btn-dark" type="submit">
+                    <i class="bi-cart-fill me-1"></i>
+                    Carro
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">{{cantidad_total_carro}}</span>
+                </a>
+
+        </div>
+    </div>
+</nav>
+
+</div>
+</div>
+</nav>
+</header>
+<!--fin de header-->
+
+<div class="p-5">
+    {% block content %}
+
+
+
+    {% endblock content %}
+</div>
+
+
+<footer>
+    <!--FOOTER CON BOOTSTRAP-->
+    <div class="container-fluid">
+        <div class="row p-5 bg-dark text-white">
+            <div class="col-xs-12 col-md-6 col-lg-3">
+                <a class="navbar-brand" href="{% url 'home:home' %}"> <img src="../static/imagenes/logofl.jpeg"
+                        alt="Logo" width="250px"> </a>
 
             </div>
-        </div>
-    </nav>
-
-    </div>
-    </div>
-    </nav>
-    </header>
-    <!--fin de header-->
-
-    <div class="p-5">
-        {% block content %}
-
-
-
-        {% endblock content %}
-    </div>
-
-
-    <footer>
-        <!--FOOTER CON BOOTSTRAP-->
-        <div class="container-fluid">
-            <div class="row p-5 bg-dark text-white">
-                <div class="col-xs-12 col-md-6 col-lg-3">
-                    <p class="h3">Ferre+</p>
-
+            <div class="col-xs-12 col-md-6 col-lg-3">
+                <p class="h5 mb-3 mb-3">Social</p>
+                <div class="mb-2">
+                    <a class="nav-link" href="https://www.facebook.com/profile.php?id=100091678300845">Facebook</a>
                 </div>
-                <div class="col-xs-12 col-md-6 col-lg-3">
-                    <p class="h5 mb-3 mb-3">Social</p>
-                    <div class="mb-2">
-                        <a class="nav-link" href="https://www.facebook.com/profile.php?id=100091678300845">Facebook</a>
-                    </div>
-                    <div class="mb-2">
-                        <a class="nav-link" href="https://www.instagram.com/tallerrayomcqeen">Instagram</a>
-                    </div>
-                    <div class="mb-2">
-                        <a class="nav-link" href="https://twitter.com/?lang=es">Twitter</a>
-                    </div>
+                <div class="mb-2">
+                    <a class="nav-link" href="https://www.instagram.com/tallerrayomcqeen">Instagram</a>
+                </div>
+                <div class="mb-2">
+                    <a class="nav-link" href="https://twitter.com/?lang=es">Twitter</a>
+                </div>
 
-                </div>
-                <div class="col-xs-12 col-md-6 col-lg-3">
-                    <p class="h5 mb-3">Documentos</p>
-                    <div class="mb-2">
-                        <a class="nav-link" href="terminosycondiciones.html">Terminos y condiciónes</a>
-                    </div>
-                    <div class="mb-2">
-                        <a class="nav-link" href="politicadeprivacidad.html">Políticas de privacidad</a>
-                    </div>
-                    <div class="mb-2">
-                        <a class="nav-link" href="#">Garantia</a>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-md-6 col-lg-3">
-                    <p class="h5 mb-3">Contactanos</p>
-                    <div class="mb-2">
-                        <a class="nav-link" href="#">fono: +56925468532</a>
-                    </div>
-                    <div class="mb-2">
-                        <a class="nav-link" href="#">Ferre+.cl</a>
-                    </div>
-                </div>
-                <div class="col-xs-12-pt-4">
-                    <p class="text-white text-center">Copyright - All rights reseverd 2023</p>
-                </div>
-                
             </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-            crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
-            integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
-            crossorigin="anonymous"></script>
+            <div class="col-xs-12 col-md-6 col-lg-3">
+                <p class="h5 mb-3">Documentos</p>
+                <div class="mb-2">
+                    <a class="nav-link" href="terminosycondiciones.html">Terminos y condiciónes</a>
+                </div>
+                <div class="mb-2">
+                    <a class="nav-link" href="politicadeprivacidad.html">Políticas de privacidad</a>
+                </div>
+                <div class="mb-2">
+                    <a class="nav-link" href="#">Garantia</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-3">
+                <p class="h5 mb-3">Contactanos</p>
+                <div class="mb-2">
+                    <a class="nav-link" href="#">fono: +56925468532</a>
+                </div>
+                <div class="mb-2">
+                    <a class="nav-link" href="#">Ferre+.cl</a>
+                </div>
+            </div>
+            <div class="col-xs-12-pt-4">
+                <p class="text-white text-center">Copyright - All rights reseverd 2023</p>
+            </div>
 
-    </footer>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+        integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+        crossorigin="anonymous"></script>
+
+</footer>
 </body>
 
 </html>

@@ -2,6 +2,62 @@
 {% load static %}
 {% block content %}
 
+<!--todo Sub Heder-->
+
+<div class="">
+    <div class="row">
+
+        <div class="col-12 text-center">
+            <img src="#" alt="">
+            <a class="btn btn-custom" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                aria-controls="offcanvasExample">
+                Categorias
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header offcanvas-header-custom">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Categorias</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body offcanvas-body-custom">
+        
+
+        <!-- Herramientas -->
+        {% for categoria in categorias %}
+        <div class="mt-3">
+            <a class="d-block text-decoration-none fw-bold text-dark" data-bs-toggle="collapse"
+                href="#collapseHerramientas" role="button" aria-expanded="false" aria-controls="collapseHerramientas">
+                {{categoria.nombre}} <span class="float-end">&#9660;</span>
+            </a>
+            <!-- <div class="collapse ms-3 mt-2" id="collapseHerramientas">
+                <a href="martillos" class="d-block text-decoration-none text-dark">Martillos</a>
+                <a href="destornilladores" class="d-block text-decoration-none  text-dark">Destornilladores</a>
+                <a href="llaves" class="d-block text-decoration-none  text-dark">Llaves</a>
+                <a href="taladros" class="d-block text-decoration-none  text-dark">Taladros</a>
+                <a href="sierras" class="d-block text-decoration-none  text-dark">Sierras</a>
+                <a href="lijadoras" class="d-block text-decoration-none  text-dark">Lijadoras</a>
+            </div> -->
+        </div>
+        {% endfor %}
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+<!--fin de categorias-->
+
+
+
+
 
 <!--todo| CARRUSEL PRINCIPAL |-->
 <div id="carouselExampleInterval" class="carousel slide mt-3" data-bs-ride="carousel">
@@ -38,10 +94,12 @@
     <h1>Productos</h1>
 </div>
 
+{{result}}
+
 
 
 <!--todo| Seccion de Productos |-->
-<div class="row">
+<div class="row justify-content-center">
     {% for i in productos %}
 
     <div class="card col-md-4 m-5" style="width: 18rem;">
@@ -53,7 +111,7 @@
         <div class="card-body">
             <h5 class="card-title">{{i.nombre}}</h5>
             <p class="card-text">{{i.precio}}</p>
-            <a href="{% url 'carro:agregar' i.id %}" class="btn btn-primary">Go somewhere</a>
+            <a href="{% url 'carro:agregar' i.id %}" class="btn btn-primary">Agregar al carro</a>
         </div>
     </div>
 
