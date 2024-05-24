@@ -1,3 +1,4 @@
+
 {% load static %}
 
 {% block content %}
@@ -96,17 +97,18 @@
                 <div class="contact-info">
                     <div class="d-flex align-items-center mb-2">
                         <i class="fa-solid fa-location-dot me-3"></i>
-                        <p>Road 198 West 21th Street, Suite 721 Singapor WW 10016</p>
+                        <p>Av. Siempre viva 712 Springfield</p>
                     </div>
                     <div class="d-flex align-items-center mb-2">
                         <i class="fa-solid fa-phone me-3"></i>
-                        <p>8888888888</p>
+                        <p>+56987654568</p>
                     </div>
                     <div class="d-flex align-items-center mb-2">
                         <i class="fa-solid fa-envelope me-3"></i>
                         <p>ferre+@gmail.com</p>
                     </div>
                 </div>
+                
             </div>
             <div class="col-md-8 p-5">
 
@@ -143,7 +145,7 @@
                     <div class="input-box">
                         <textarea class="form-control" placeholder="Escribe tu mensaje..." name="message"></textarea>
                     </div>
-                    <a class="" href="{% url 'home:home' %}">Ir al home</a>
+                    <a href="{% url 'home:home' %}" class="btn btn-dark mr-4">Ir al home</a>
                     <br>
                     <br>
                     <button type="submit" class="btn btn-primary">Enviar mensaje</button>

@@ -123,14 +123,17 @@
                 </ul>
 
             </div>
+            <span class="d-none d-md-block" style="width: 20px;"></span><!-- Separador invisible -->
+
 
             {% else %}
-            <a href="{% url 'login' %}">Iniciar sesion</a>
+            <a href="{% url 'login' %}" class="btn btn-dark mr-4"><i class="fa-solid fa-user"></i> Iniciar sesion</a>
+            <span class="d-none d-md-block" style="width: 20px;"></span><!-- Separador invisible -->
             {% endif %}
 
             <a href="{% url 'carro:carro' %}" class="btn btn-dark" type="submit">
                 <i class="bi-cart-fill me-1"></i>
-                <i class="fa-solid fa-cart-shopping"></i> Carro
+                <i class="fa-solid fa-cart-shopping"></i>Carro
                 <span class="badge bg-dark text-white ms-1 rounded-pill">{{cantidad_total_carro}}</span>
             </a>
 
