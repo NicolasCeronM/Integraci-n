@@ -5,6 +5,8 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from .forms import CustomUser
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 
 
@@ -108,3 +110,25 @@ def contacto(request):
 
 
     return render(request, 'contacto/Contacto.html', )
+
+def registro(request):
+
+    data = {
+        'form':CustomUser()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomUser(data = request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            user = authenticate(username = formulario.cleaned_data["username"], password = formulario.cleaned_data["password1"])
+            messages.success(request, 'Registrado correctamente')
+            login(request, user)
+            return redirect(to='home:home')
+        data["form"] = formulario
+
+    return render(request,'registration/registro.html',data)
+
+def salir(request):
+    logout(request)
+    return redirect(to='home:home')

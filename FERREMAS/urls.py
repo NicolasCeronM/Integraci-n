@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import logout_then_login
 
 from django.urls import re_path
 from rest_framework import permissions
@@ -45,6 +47,7 @@ urlpatterns = [
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('logout/', logout_then_login, name='logout'),
 ]
 
 if settings.DEBUG:

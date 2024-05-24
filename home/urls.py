@@ -11,4 +11,6 @@ urlpatterns = [
 
     # seccion de contacto
     path('contacto/', views.contacto, name="contacto"),
+    path('registro/', views.registro, name='registro'),
+    path('salir/', views.salir, name='salir'),
 ]
