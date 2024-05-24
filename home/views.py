@@ -4,6 +4,9 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from .forms import CustomUser
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 
 
@@ -22,40 +25,45 @@ def home(request):
 
 def admin(request):
 
-    productos = Producto.objects.all()
-    categorias = Categoria.objects.all()
+    if request.user.is_staff:
+    
+        productos = Producto.objects.all()
+        categorias = Categoria.objects.all()
 
-    data = {
-        'productos': productos,
-        'categorias': categorias
-    }
+        data = {
+            'productos': productos,
+            'categorias': categorias
+        }
 
-    if request.method != 'POST':
-        return render(request, 'administrador/admin.html', data)
+        if request.method != 'POST':
+            return render(request, 'administrador/admin.html', data)
+        else:
+            imagen = request.FILES.get('imagen')
+            nombre = request.POST['nombre']
+            descipcion = request.POST['desc']
+            seccion = request.POST['seccion']
+            precio = request.POST['precio']
+
+            categoria = Categoria.objects.get(nombre=seccion)
+
+            objProducto = Producto.objects.create(
+                imagen=imagen,
+                nombre=nombre,
+                descripcion=descipcion,
+                precio=precio,
+                categoria=categoria,
+                # stock = stock,
+            )
+            objProducto.save()
+
+            # messages.success(request,'Producto creado correctamente')
+
+            # return redirect(to='admin_page:productos')
+
+            return render(request, 'administrador/admin.html', data)
+        
     else:
-        imagen = request.FILES.get('imagen')
-        nombre = request.POST['nombre']
-        descipcion = request.POST['desc']
-        seccion = request.POST['seccion']
-        precio = request.POST['precio']
-
-        categoria = Categoria.objects.get(nombre=seccion)
-
-        objProducto = Producto.objects.create(
-            imagen=imagen,
-            nombre=nombre,
-            descripcion=descipcion,
-            precio=precio,
-            categoria=categoria,
-            # stock = stock,
-        )
-        objProducto.save()
-
-        # messages.success(request,'Producto creado correctamente')
-
-        # return redirect(to='admin_page:productos')
-
-        return render(request, 'administrador/admin.html', data)
+        return redirect(to='home:home')
 
 
 def eliminar(request, id):
@@ -102,3 +110,25 @@ def contacto(request):
 
 
     return render(request, 'contacto/Contacto.html', )
+
+def registro(request):
+
+    data = {
+        'form':CustomUser()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomUser(data = request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            user = authenticate(username = formulario.cleaned_data["username"], password = formulario.cleaned_data["password1"])
+            messages.success(request, 'Registrado correctamente')
+            login(request, user)
+            return redirect(to='home:home')
+        data["form"] = formulario
+
+    return render(request,'registration/registro.html',data)
+
+def salir(request):
+    logout(request)
+    return redirect(to='home:home')
