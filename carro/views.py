@@ -27,19 +27,21 @@ def vista_carro(request):
             "title": producto['nombre'],
             "quantity": producto['cantidad'],
             "currency_id": "CLP",
-            "unit_price": float(producto['precio'])
+            "unit_price": float(producto['precio']),
+            "description": f"Producto {producto['nombre']}",
+            "picture_url": producto['imagen']  # Añadir la URL de la imagen del producto
         }
         items.append(item)
 
     preference_data = {
         "items": items,
         "payer": {
-            "email": "test_user@test.com"
+            "email": "njcolas134b@gmail.com"
         },
         "back_urls": {
-            "success": "http://localhost:8000/",
-            "failure": "http://localhost:8000/failure/",
-            "pending": "http://localhost:8000/pending/"
+            "success": "http://localhost:8000/mis_compras",
+            "failure": "http://localhost:8000/",
+            "pending": "http://localhost:8000/"
         },
         "auto_return": "approved"
     }
