@@ -171,7 +171,6 @@ def vista_usuario(request):
 
         )
 
-        carro.limpiar_carro()
     else:
         status = 'No existe ninguna pago'
     
