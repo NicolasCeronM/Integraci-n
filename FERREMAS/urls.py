@@ -48,6 +48,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('logout/', logout_then_login, name='logout'),
+    path('producto/', include('producto.urls'), name='producto'),
 ]
 
 if settings.DEBUG:

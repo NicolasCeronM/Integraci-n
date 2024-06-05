@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,64 +11,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!--diseño boton y su conjunto-->
-    <style>
-        .btn-custom {
-            background-color: #c29904;
-            border: none;
-            color: rgb(43, 25, 25);
-            font-size: 1.2rem;
-            padding: 10px 20px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .btn-custom:hover {
-            background-color: #c7890c;
-            transform: scale(1.05);
-        }
-
-        .offcanvas-custom {
-            background-color: #f8f9fa;
-            /* Color de fondo  */
-            color: #343a40;
-            /* Texto */
-        }
-
-        .offcanvas-header-custom {
-            background-color: #975e08;
-            /* Fondo interno */
-            color: rgb(255, 245, 245);
-        }
-
-        .offcanvas-body-custom a {
-            display: block;
-            padding: 10px;
-            margin-bottom: 5px;
-            background-color: #e9ecef;
-            /* Fondo interno de las casillas */
-            color: #343a40;
-            /* Texto */
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .offcanvas-body-custom a:hover {
-            background-color: #457cb4;
-            /* Fondo */
-        }
-    </style>
-    <!--fin de diseño boton-->
-
-    <!--color del header-->
-    <style>
-        .navbar-custom {
-            background-color: #d88415;
-
-        }
-    </style>
-    <!--fin-->
-
+    <link rel="stylesheet" href="{% static 'css/categorias.css' %}">
 </head>
 
 <body style="background-image: url('../static/imagenes/fondopg.jpg');"></body>
@@ -75,7 +20,7 @@
 <nav class="navbar navbar-expand-lg navbar-custom">
 
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home:home' %}"> <img src="../static/imagenes/logofl.jpeg" alt="Logo"
+        <a class="navbar-brand" href="{% url 'home:home' %}"> <img src="{% static 'imagenes/logofl.jpeg' %}" alt="Logo" 
                 width="120px"> </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,6 +42,8 @@
                     </a>
                 </li>
 
+                
+
                 {% if request.user.is_staff %}
 
 
@@ -106,6 +53,8 @@
                 {% endif %}
 
             </ul>
+
+            
 
 
             {% if user.is_authenticated %}
@@ -139,13 +88,38 @@
             </a>
 
         </div>
+
+        
     </div>
+
+    
 </nav>
+
 
 <!--fin de header-->
 
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header offcanvas-header-custom">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Categorias</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body offcanvas-body-custom">
+
+        {% for categoria in categorias %}
+        <div class="mt-3">
+            <a class="d-block text-decoration-none fw-bold text-dark" 
+                href="{% url 'producto:categoria' categoria.id %}">
+                {{categoria.nombre}} 
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
 <div class="p-5">
     {% block content %}
+
+    
 
 
 

@@ -15,46 +15,6 @@
 {% endif %}
 
 
-<!--todo Sub Heder-->
-
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header offcanvas-header-custom">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Categorias</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body offcanvas-body-custom">
-
-
-        <!-- Herramientas -->
-        {% for categoria in categorias %}
-        <div class="mt-3">
-            <a class="d-block text-decoration-none fw-bold text-dark" data-bs-toggle="collapse"
-                href="#collapseHerramientas" role="button" aria-expanded="false" aria-controls="collapseHerramientas">
-                {{categoria.nombre}} <span class="float-end">&#9660;</span>
-            </a>
-            <!-- <div class="collapse ms-3 mt-2" id="collapseHerramientas">
-                <a href="martillos" class="d-block text-decoration-none text-dark">Martillos</a>
-                <a href="destornilladores" class="d-block text-decoration-none  text-dark">Destornilladores</a>
-                <a href="llaves" class="d-block text-decoration-none  text-dark">Llaves</a>
-                <a href="taladros" class="d-block text-decoration-none  text-dark">Taladros</a>
-                <a href="sierras" class="d-block text-decoration-none  text-dark">Sierras</a>
-                <a href="lijadoras" class="d-block text-decoration-none  text-dark">Lijadoras</a>
-            </div> -->
-        </div>
-        {% endfor %}
-
-
-
-
-
-
-    </div>
-</div>
-
-<!--fin de categorias-->
-
-
-
 
 
 <!--todo| CARRUSEL PRINCIPAL |-->
@@ -100,7 +60,7 @@
 <div class="row justify-content-center">
     {% for i in productos %}
 
-    <div class="card col-md-4 m-5" style="width: 18rem;">
+    <div class="card shadow-lg col-md-4 m-5" style="width: 18rem;">
         {% if i.imagen %}
         <img src="{{i.imagen.url}}" class="card-img-top" alt="...">
         {% else %}
@@ -115,9 +75,6 @@
 
     {% endfor %}
 </div>
-
-
-
 
 
 {% endblock content %}
