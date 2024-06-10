@@ -1,0 +1,103 @@
+{% extends 'administrador/base_administrador.html' %}
+
+{% load static %}
+
+{% block title %} Productos {% endblock %}
+
+{% block content %}
+
+
+<div id="page-content-wrapper">
+
+    <!-- * Boton-->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+            <h2 class="fs-2 m-0">Pedidos</h2>
+        </div>
+    </nav>
+
+    <!-- * CONTENIDO PAGINA*-->
+
+    <div class="container-fluid px-4 ">
+
+
+        <div class="p-2" style=" background-color: white;">
+
+
+            <!--todo BOTONES (ENCABEZADO)-->
+            <div class="m-3">
+                <a href="{% url 'home:export_pedidos_csv' %}" class="btn btn-primary">Descargar CSV</a>
+
+
+            </div>
+
+            <!--todo TABLA (CUERPO)-->
+
+            <div class="col table-responsive p-3 rounded">
+
+                <table class="table table-striped text-center shadow">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th class="col" width="20px">Imagen</th>
+                            <th class="col">Nombre</th>
+                            <th class="col">Precio normal</th>
+                            <th class="col">Descripcion</th>
+                            <th class="col-1">Seccion</th>
+                            <th class="col">Stock</th>
+                            <th class="col">Fecha de creacion</th>
+                            <th class="col">Opciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% if productos %}
+                        {% for i in productos %}
+                        <tr>
+                            <th class="">{{i.id}}</th>
+                            {% if i.imagen %}
+                            <td class="col"><img src="{{i.imagen.url}}" alt="" class="img-fluid"></td>
+                            {% else %}
+                            
+                            <td class="col"><img src="media/producto/default.jpg" alt="" class="img-fluid"></td>
+                            {% endif %}
+                            
+                            <td class="col">{{i.nombre}}</td>
+                            <td class="col">$ {{i.precio}}</td>
+                            <td class="col">{{i.descripcion}}</td>
+                            <td class="col">{{i.categoria}}</td>
+                            <td class="col">{{i.stock}}</td>
+                            <td class="col">{{i.created}}</td>
+                            <td>
+
+                                <a href="{% url 'home:eliminar' i.id %}"> <button class="btn btn-danger mb-1"><i
+                                            class="fa-solid fa-trash-can"></i></button></a>
+
+                                <a href="#"> <button class="btn btn-primary mb-1"><i
+                                            class="fa-regular fa-pen-to-square"></i></button></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <td colspan="8">Ningun producto creado</td>
+                        {% endif %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+{% endblock %}

@@ -11,6 +11,8 @@ from django.core.mail import send_mail
 from carro.context_processor import importe_total_carro
 from carro.carro import Carro
 from django.utils.html import strip_tags
+import csv
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -68,6 +70,33 @@ def admin(request):
         
     else:
         return redirect(to='home:home')
+    
+def admin_pedido(request):
+
+    pedidos = Pedido.objects.all()
+
+    data = {
+        'pedidos': pedidos
+    }
+
+    return render(request,'administrador/pedidos_admin.html', data)
+
+def export_pedidos_csv(request):
+    # Crear la respuesta con el tipo de contenido CSV
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="pedidos.csv"'
+
+    # Crear un escritor CSV
+    writer = csv.writer(response)
+    # Escribir el encabezado del CSV
+    writer.writerow(['ID', 'Fecha', 'Total','Cliente'])
+
+    # Obtener todos los registros de pedidos y escribirlos en el CSV
+    pedidos = Pedido.objects.all()
+    for pedido in pedidos:
+        writer.writerow([pedido.pk, pedido.created_at, pedido.total, pedido.user])
+
+    return response
 
 
 def eliminar(request, id):

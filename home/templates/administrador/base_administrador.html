@@ -34,13 +34,13 @@
                 {% if request.path == '/dash_admin/usuarios/' %} active {% endif %}"><i
                         class="fa-solid fa-user me-2"></i>Usuarios</a>
 
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold
+                <a href="{% url 'home:administrador' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold
                         {% if request.path == '/dash_admin/productos/' %} active {% endif %}">
                     <i class="fa-solid fa-tag me-2"></i>Productos</a>
 
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold
-                    {% if request.path == '/dash_admin/descuentos/' %} active {% endif %}">
-                    <i class="fa-solid fa-percent me-2"></i>Descuentos</a>
+                <a href="{% url 'home:pedidos' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold
+                    {% if request.path == '/pedidos/' %} active {% endif %}">
+                    <i class="fa-solid fa-percent me-2"></i>Pedidos</a>
 
                 <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold
                     {% if request.path == '/dash_admin/planes/' %} active {% endif %}">
