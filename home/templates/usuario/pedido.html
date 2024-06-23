@@ -12,16 +12,24 @@
         <div class="row">
 
             <div class="">
+                <h1>Hola <strong>{{nombreusuario}}</strong></h1>
 
-                {{pedido}}
-                {{detalle_pedido}}
-                {{nombreusuario}}
-                {{total}}
+                <p><strong>ID Pedido: </strong> {{pedido}}</p>
+                <p><strong>Fexha de pedido: </strong>{{pedido.created_at}}</p>
+
+
+                {% for detalle in detalle_pedido %}
+
+                    <ul>
+                        <li> {{detalle.producto.nombre}} X {{detalle.cantidad}}</li>
+                    </ul>
+
+                {% endfor %}
+                    
+               <p>{{total}}</p>
 
 
             </div>
-
-
 
         </div>
     </div>

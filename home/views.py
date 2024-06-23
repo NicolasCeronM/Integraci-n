@@ -4,7 +4,6 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
 from .forms import CustomUser
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
@@ -14,6 +13,7 @@ from django.utils.html import strip_tags
 import csv
 from django.http import HttpResponse
 from django.db.models import Q
+from django.urls import reverse
 # Create your views here.
 
 
@@ -173,58 +173,47 @@ def registro(request):
     return render(request,'registration/registro.html',data)
 
 def vista_usuario(request):
-
     total = importe_total_carro(request)
     importe_total = total['importe_total_carro']
-    
 
     status = request.GET.get('status')
 
     if status == 'approved':
-        pedido = Pedido.objects.create(user=request.user,total=importe_total)
-            
+        pedido = Pedido.objects.create(user=request.user, total=importe_total)
+
         carro = Carro(request)
-
-        compra = list()
-
-        for key,value in carro.carro.items():
-
-            compra.append(DetallePedido(
-
-                user = request.user,
-                producto_id = key,
-                pedido = pedido,
-                cantidad = value['cantidad'],
-            ))
-
-
+        compra = [
+            DetallePedido(
+                user=request.user,
+                producto_id=key,
+                pedido=pedido,
+                cantidad=value['cantidad'],
+            ) for key, value in carro.carro.items()
+        ]
 
         DetallePedido.objects.bulk_create(compra)
-                            
+
         enviar_mail(
             pedido=pedido,
-            detalle_pedido = compra,
+            detalle_pedido=compra,
             nombreusuario=request.user.username,
-            emailusuario = request.user.email,
-            total = importe_total_carro(request)
-
+            emailusuario=request.user.email,
+            total=importe_total_carro(request)
         )
 
-    else:
-        status = 'No existe ninguna pago'
-    
-    pedido = Pedido.objects.filter(user=request.user)
-    detalle = DetallePedido.objects.filter(user=request.user)
+        # Redirige a la misma página sin parámetros
+        return redirect(reverse('home:mis_compras'))
+
+    pedidos = Pedido.objects.filter(user=request.user)
+    detalles = DetallePedido.objects.filter(user=request.user)
 
     data = {
-        'pedidos': pedido,
-        'detalle_pedidos': detalle,
-        'status':status
+        'pedidos': pedidos,
+        'detalle_pedidos': detalles,
+        'status': status if status else 'No existe ninguna pago'
     }
 
-
-
-    return render(request,'usuario/mis_compras.html', data)
+    return render(request, 'usuario/mis_compras.html', data)
 
 def salir(request):
     logout(request)

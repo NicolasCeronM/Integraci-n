@@ -6,7 +6,7 @@ import mercadopago
 from django.conf import settings
 import requests
 from carro.context_processor import importe_total_carro
-from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -60,7 +60,7 @@ def vista_carro(request):
     preference_data = {
         "items": items,
         "payer": {
-            "email": "njcolas134b@gmail.com"
+            "email": request.user.email
         },
         "back_urls": {
             "success": "http://localhost:8000/mis_compras",
@@ -81,6 +81,7 @@ def vista_carro(request):
         'direcciones':direcciones
     })
     
+@login_required
 def agregar_producto(request,producto_id):
 
     carro = Carro(request)
