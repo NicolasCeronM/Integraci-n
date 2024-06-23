@@ -3,7 +3,7 @@
 {% block content %}
 
 
-{% if messages %}
+<!-- {% if messages %}
 {% for message in messages %}
 
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -12,9 +12,7 @@
 </div>
 
 {% endfor %}
-{% endif %}
-
-
+{% endif %} -->
 
 
 <!--todo| CARRUSEL PRINCIPAL |-->
@@ -54,7 +52,24 @@
 
 {{result}}
 
+<!--todo| Busqueda-->
 
+<!--Busqueda-->
+
+<div class="col-lg-">
+    <form action="" method="get">
+        <div id="busqueda">
+            <di class="input-grup col-md-12">
+                <input type="text " class="form-control" placeholder="Buscar..." name="buscador">
+                <span class="input-grup-list">
+                    <i class="icon icon-search"></i>
+                    <button type="submit" class="bu">Buscar</button>
+                </span>
+            </di>
+
+        </div>
+    </form>
+</div>
 
 <!--todo| Seccion de Productos |-->
 <div class="row justify-content-center">

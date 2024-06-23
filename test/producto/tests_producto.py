@@ -2,7 +2,6 @@ import pytest
 from producto.models import Producto, Categoria
 
 
-
 @pytest.mark.django_db
 def tests_producto_creations():
     categoria = Categoria.objects.create(

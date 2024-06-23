@@ -13,6 +13,7 @@ from carro.carro import Carro
 from django.utils.html import strip_tags
 import csv
 from django.http import HttpResponse
+from django.db.models import Q
 # Create your views here.
 
 
@@ -21,9 +22,18 @@ def home(request):
     productos = Producto.objects.all()
     categorias = Categoria.objects.all()
 
+    queryset = request.GET.get('buscar')
+
+    if queryset:
+        productos = Producto.objects.filter(
+
+            Q(nombre__icontains = queryset)
+        ).distinct()
+
     data = {
         'productos': productos,
-        'categorias': categorias
+        'categorias': categorias,
+
     }
 
     return render(request, 'index.html', data)
