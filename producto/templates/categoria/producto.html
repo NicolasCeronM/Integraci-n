@@ -17,7 +17,7 @@
 
         {% for i in productos %}
 
-        <div class="card shadow-lg col-md-4 m-5" style="width: 18rem;">
+        <!-- <div class="card shadow-lg col-md-4 m-5" style="width: 18rem;">
             {% if i.imagen %}
             <img src="{{i.imagen.url}}" class="img-fluid" alt="...">
             {% else %}
@@ -27,6 +27,25 @@
                 <h5 class="card-title">{{i.nombre}}</h5>
                 <p class="card-text">$ {{i.precio}}</p>
                 <a href="{% url 'carro:agregar' i.id %}" class="btn btn-primary">Agregar al carro</a>
+            </div>
+        </div> -->
+
+        <div class="col-md-3 m-5">
+            <div class="card rounded-2 shadow" style="position: relative;">
+                <!-- <span class="discount-badge">30%</span> -->
+                <a href="{% url 'producto:detalle_producto' i.id %}">
+                    {% if i.imagen %}
+                    <img src="{{i.imagen.url}}" class="card-img-top" alt="...">
+                    {% else %}
+                    <img src="media/producto/default.jpg" class="card-img-top" alt="...">
+                    {% endif %}
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{i.nombre}}</h5>
+                    <p class="card-text">{{i.descripcion}}</p>
+                    <p class="h4">CLP {{i.precio}}</p>
+                    <a href="{% url 'carro:agregar' i.id %}" class="btn btn-outline-primary btn-block">Añadir al carro</a>
+                </div>
             </div>
         </div>
 

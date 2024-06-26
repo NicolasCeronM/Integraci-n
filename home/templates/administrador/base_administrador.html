@@ -27,28 +27,20 @@
                     <img src="{% static 'imagenes/ferre.jpg' %}" alt="" width="200px" height="165">
                 </a></div>
             <div class="list-group list-group-flush my-3">
-                <a href="{% url 'home:home' %}" class="list-group-item list-group-item-action bg-transparent second-text 
-                {% if request.path == '/dash_admin/' %} active {% endif %} "><i
-                        class="fas fa-tachometer-alt me-2"></i>Inicio</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold
-                {% if request.path == '/dash_admin/usuarios/' %} active {% endif %}"><i
-                        class="fa-solid fa-user me-2"></i>Usuarios</a>
+                <a href="{% url 'home:home' %}" class="list-group-item list-group-item-action bg-transparent second-text">
+                    <i class="fa-solid fa-desktop me-2"></i>Ir a la pagina</a>
 
-                <a href="{% url 'home:administrador' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold
-                        {% if request.path == '/dash_admin/productos/' %} active {% endif %}">
+                <a href="{% url 'home:administrador' %}" class="list-group-item list-group-item-action bg-transparent second-text 
+                        {% if request.path == '/administrador/' %} active {% endif %}">
                     <i class="fa-solid fa-tag me-2"></i>Productos</a>
 
-                <a href="{% url 'home:pedidos' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold
-                    {% if request.path == '/pedidos/' %} active {% endif %}">
+                <a href="{% url 'home:pedidos' %}" class="list-group-item list-group-item-action bg-transparent second-text 
+                    {% if request.path == '/pedidos' %} active {% endif %}">
                     <i class="fa-solid fa-percent me-2"></i>Pedidos</a>
-
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold
-                    {% if request.path == '/dash_admin/planes/' %} active {% endif %}">
-                    <i class="fa-solid fa-handshake me-2"></i>Planes y suscripciones</a>
 
 
                 <a href="#" onclick="cerrarSesion()"
-                    class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
+                    class="list-group-item list-group-item-action bg-transparent text-danger "><i
                         class="fas fa-power-off me-2"></i>Cerrar Sesion</a>
 
             </div>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.urls import reverse
 from .carro import Carro
-from producto.models import Producto, Direccion
+from producto.models import Producto, Direccion, Categoria
 import mercadopago
 from django.conf import settings
 import requests
@@ -74,11 +74,13 @@ def vista_carro(request):
     preference = preference_response["response"]
 
     direcciones = Direccion.objects.all()
+    categorias = Categoria.objects.all()
 
     return render(request, 'carro.html', {
         'preference_id': preference['id'],
         'public_key': settings.MERCADO_PAGO_PUBLIC_KEY,
-        'direcciones':direcciones
+        'direcciones':direcciones,
+        'categorias':categorias
     })
     
 @login_required

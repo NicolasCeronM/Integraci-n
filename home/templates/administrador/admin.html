@@ -49,7 +49,6 @@
                             <th class="col">Descripcion</th>
                             <th class="col-1">Seccion</th>
                             <th class="col">Stock</th>
-                            <th class="col">Fecha de creacion</th>
                             <th class="col">Opciones</th>
                         </tr>
                     </thead>
@@ -72,7 +71,6 @@
                             <td class="col">{{i.descripcion}}</td>
                             <td class="col">{{i.categoria}}</td>
                             <td class="col">{{i.stock}}</td>
-                            <td class="col">{{i.created}}</td>
                             <td>
 
                                 <a href="{% url 'home:eliminar' i.id %}"> <button class="btn btn-danger mb-1"><i

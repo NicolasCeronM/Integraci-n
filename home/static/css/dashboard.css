@@ -89,4 +89,9 @@
   }
   
   /* ! CSS DE BARRA DE BUSQUEDA */
+
+.active{
+
+  color: var(--main-bg-color);
+}
   

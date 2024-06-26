@@ -16,3 +16,16 @@ def productos(request, id):
     }
 
     return render(request,'categoria/producto.html', data)
+
+def detalle_producto(request,id):
+
+    producto_id = id
+    producto = Producto.objects.filter(id=producto_id)
+
+    data = {
+
+        'producto':producto
+    }
+
+    return render(request, 'unitario/detalle_producto.html', data)
+

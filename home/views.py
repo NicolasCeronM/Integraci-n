@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from producto.models import Producto, Categoria, Pedido, DetallePedido
+from producto.models import Producto, Categoria, Pedido, DetallePedido, Direccion
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -18,7 +18,6 @@ from django.urls import reverse
 
 
 def home(request):
-
     productos = Producto.objects.all()
     categorias = Categoria.objects.all()
 
@@ -26,14 +25,12 @@ def home(request):
 
     if queryset:
         productos = Producto.objects.filter(
-
-            Q(nombre__icontains = queryset)
+            Q(nombre__icontains=queryset)
         ).distinct()
 
     data = {
         'productos': productos,
         'categorias': categorias,
-
     }
 
     return render(request, 'index.html', data)
@@ -59,6 +56,7 @@ def admin(request):
             descipcion = request.POST['desc']
             seccion = request.POST['seccion']
             precio = request.POST['precio']
+            stock = request.POST['stock']
 
             categoria = Categoria.objects.get(nombre=seccion)
 
@@ -68,7 +66,7 @@ def admin(request):
                 descripcion=descipcion,
                 precio=precio,
                 categoria=categoria,
-                # stock = stock,
+                stock = stock,
             )
             objProducto.save()
 
@@ -82,14 +80,33 @@ def admin(request):
         return redirect(to='home:home')
     
 def admin_pedido(request):
-
     pedidos = Pedido.objects.all()
+    detalles_pedidos = DetallePedido.objects.all()
+
+    pedidos_con_detalles = []
+
+    for p in pedidos:
+        detalles = []
+        for dp in detalles_pedidos:
+            if p.id == dp.pedido_id:
+                detalles.append(dp.producto)
+            
+
+        pedido = {
+            'id': p.id,
+            'user': p.user,
+            'total': p.total,
+            'fecha': p.created_at,
+            'direccion':p.direccion,
+            'productos': detalles
+        }
+        pedidos_con_detalles.append(pedido)
 
     data = {
-        'pedidos': pedidos
+        'pedidos': pedidos_con_detalles
     }
 
-    return render(request,'administrador/pedidos_admin.html', data)
+    return render(request, 'administrador/pedidos_admin.html', data)
 
 def export_pedidos_csv(request):
     # Crear la respuesta con el tipo de contenido CSV
