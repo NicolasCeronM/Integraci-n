@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.urls import reverse
+from django.http import JsonResponse
 from .carro import Carro
 from producto.models import Producto, Direccion, Categoria
 import mercadopago
@@ -82,6 +83,7 @@ def vista_carro(request):
         'direcciones':direcciones,
         'categorias':categorias
     })
+
     
 @login_required
 def agregar_producto(request,producto_id):
@@ -94,25 +96,25 @@ def agregar_producto(request,producto_id):
 
     return redirect("carro:carro")
 
-def eliminiar_producto(request,producto_id):
+# def eliminiar_producto(request,producto_id):
 
-    carro = Carro(request)
+#     carro = Carro(request)
 
-    producto = Producto.objects.get(id=producto_id)
+#     producto = Producto.objects.get(id=producto_id)
 
-    carro.eliminar(producto = producto)
+#     carro.eliminar(producto = producto)
 
-    return redirect("carro:carro")
+#     return redirect("carro:carro")
 
-def restar_producto(request,producto_id):
+# def restar_producto(request,producto_id):
 
-    carro = Carro(request)
+#     carro = Carro(request)
 
-    producto = Producto.objects.get(id=producto_id)
+#     producto = Producto.objects.get(id=producto_id)
 
-    carro.restar_producto(producto = producto)
+#     carro.restar_producto(producto = producto)
 
-    return redirect("carro:carro")
+#     return redirect("carro:carro")
 
 def limpiar_carro(request):
 
@@ -120,3 +122,54 @@ def limpiar_carro(request):
     carro.limpiar_carro()
 
     return redirect("carro:carro")
+
+
+# PRUEBAS AJAX
+
+
+def calcular_total(carro):
+    total = 0
+    for key, value in carro.carro.items():
+        total += int(value['precio']) * value['cantidad']
+    return total
+
+
+def sumar_producto(request, producto_id):
+    try:
+        carro = Carro(request)
+        producto = Producto.objects.get(id=producto_id)
+        carro.agregar(producto = producto)
+        cantidad = carro.carro[str(producto.id)]['cantidad']
+        total = calcular_total(carro)
+        return JsonResponse({'message': 'Producto sumado', 'cantidad': cantidad, 'total': total})
+    except Producto.DoesNotExist:
+        return JsonResponse({'message': 'Producto no encontrado'}, status=404)
+    except KeyError as e:
+        return JsonResponse({'message': f'Error al sumar producto: {e}'}, status=500)
+
+@login_required
+def restar_producto(request, producto_id):
+    try:
+        carro = Carro(request)
+        producto = Producto.objects.get(id=producto_id)
+        carro.restar_producto(producto=producto)
+        cantidad = carro.carro[str(producto.id)]['cantidad'] if str(producto.id) in carro.carro else 0
+        total = calcular_total(carro)
+        return JsonResponse({'message': 'Producto restado', 'cantidad': cantidad, 'total': total})
+    except Producto.DoesNotExist:
+        return JsonResponse({'message': 'Producto no encontrado'}, status=404)
+    except KeyError as e:
+        return JsonResponse({'message': f'Error al restar producto: {e}'}, status=500)
+
+@login_required
+def eliminar_producto(request, producto_id):
+    try:
+        carro = Carro(request)
+        producto = Producto.objects.get(id=producto_id)
+        carro.eliminar(producto=producto)
+        total = calcular_total(carro)
+        return JsonResponse({'message': 'Producto eliminado', 'total': total})
+    except Producto.DoesNotExist:
+        return JsonResponse({'message': 'Producto no encontrado'}, status=404)
+    except KeyError as e:
+        return JsonResponse({'message': f'Error al eliminar producto: {e}'}, status=500)

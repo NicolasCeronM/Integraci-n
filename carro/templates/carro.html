@@ -33,13 +33,14 @@
     <link rel="manifest" href="https://www.ferremas.com.py/favicons/site.webmanifest?1684938985">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+    
 
 </head>
 
 
 
 <!--CONTENIDO DEL CARRITO DE COMPRA-->
-<section class="carrito">
+<section  class="carrito">
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-8">
@@ -66,7 +67,7 @@
                 {% if request.session.carro.items %}
                 {% for key, value in request.session.carro.items %}
 
-                <div class="caja_info">
+                <div class="caja_info" id="producto-{{ value.producto_id }}">
                     <div class="carrito_prod_imagen">
                         <img src="{{value.imagen}}" class="img-fluid" />
                     </div>
@@ -78,9 +79,9 @@
                     </div>
 
                     <div class="carrito_prod_numeros">
-                        <a href="{% url 'carro:eliminar' value.producto_id %}" class="eliminar_producto"
-                            onClick="deleteProduct('9cfb444411f4916d5989466c581d9517');"><img
-                                src="https://www.ferremas.com.py/assets/img/eliminar.svg" class="img-fluid" /></a>
+                        <button class="eliminar_producto" onclick="eliminarProducto({{ value.producto_id }})">
+                            <img src="https://www.ferremas.com.py/assets/img/eliminar.svg" class="img-fluid"/>
+                        </button>
 
                         <div class="un_producto_info_bottom">
                             <div class="un_producto_precio">
@@ -91,24 +92,21 @@
                                 <div class="un_producto_cantidad">
                                     <div class="input-group">
                                         <span class="input-group-btn btn_minus">
-                                            <a href="{% url 'carro:restar' value.producto_id %}">
-                                                <button type="button" class="btn btn-number" data-type="minus"
-                                                    data-field="quant[2]"
-                                                    onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 2);">
-                                                    <span class="glyphicon glyphicon-minus"></span>
-                                                </button>
-                                            </a>
+
+                                            <button type="button" class="btn btn-number"
+                                                onclick="restarProducto( {{value.producto_id}} )">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                            </button>
+
                                         </span>
                                         <input type="text" name="quant[2]" class="form-control input-number"
-                                            value="{{value.cantidad}}" readonly>
+                                            value="{{ value.cantidad }}" readonly id="cantidad-{{ value.producto_id }}">
+
                                         <span class="input-group-btn btn_plus">
-                                            <a href="{% url 'carro:agregar' value.producto_id %}">
-                                                <button type="button" class="btn btn-number" data-type="plus"
-                                                    data-field="quant[2]"
-                                                    onClick="shopping_cart.edit('9cfb444411f4916d5989466c581d9517', 1);">
-                                                    <span class="glyphicon glyphicon-plus"></span>
-                                                </button>
-                                            </a>
+                                            <button type="button" class="btn btn-number" onclick="sumarProducto({{ value.producto_id }})">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+
                                         </span>
                                     </div>
                                 </div>
@@ -136,6 +134,7 @@
                                 <span id="importe-total" class="badge bg-primary"
                                     data-value="{{ importe_total_carro }}">{{importe_total_carro }}</span>
                             </p>
+                            
                             <div class="currency-select-container">
                                 <label for="currency-select" class="form-label">Selecciona una moneda:</label>
                                 <select id="currency-select" class="form-select">
@@ -150,7 +149,7 @@
                         </div>
                     </div>
 
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+                    
                 </body>
 
                 </html>
@@ -186,11 +185,11 @@
 
                                         <select class="form-select" aria-label="Default select example">
                                             <option selected>Selecciones una direccion</option>
-                                            
-                                            {% for direc in direcciones  %}                                         
-                                                {% if direc.user == user %}     
-                                                    <option value="{direc.user}">{{direc}}</option>
-                                                {% endif %}                                          
+
+                                            {% for direc in direcciones %}
+                                            {% if direc.user == user %}
+                                            <option value="{direc.user}">{{direc}}</option>
+                                            {% endif %}
                                             {% endfor %}
                                         </select>
 
@@ -200,8 +199,9 @@
                                     </div>
 
                                     <div class="nro linea lineatotal">
-                                        Total<br>${{importe_total_carro}}
+                                        <h3>Total: $<span id="total">{{ importe_total_carro }}</span></h3>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -287,15 +287,31 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-success">Grardar direccion</button>
                 </div>
+
             </div>
         </form>
     </div>
 </div>
 
+<script>
+    function sumarProducto(productoId) {
+    $.ajax({
+        url: `/carro/sumar_producto/${productoId}/`,
+        method: 'GET',
+        success: function(data) {
+            $('#cantidad-' + productoId).val(data.cantidad);
+            actualizarTotal(data.total);
+        }
+    });
+}
+</script>
+<script src="{% static 'js/carro.js' %}"></script>
 
+<!-- <script src="{% static 'js/carro.js' %}"></script> -->
 <script src="{% static 'js/cambio_monedas.js' %}"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
+    
     const mp = new MercadoPago('{{ public_key }}');
 
     mp.bricks().create("wallet", "wallet_container", {
@@ -309,6 +325,8 @@
         },
     });
 </script>
+
+
 
 
 {% endblock content %}
