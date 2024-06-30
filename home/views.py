@@ -52,6 +52,8 @@ def admin(request):
             return render(request, 'administrador/admin.html', data)
         else:
             imagen = request.FILES.get('imagen')
+            if not imagen:
+                imagen = '/producto/default.jpg'
             nombre = request.POST['nombre']
             descipcion = request.POST['desc']
             seccion = request.POST['seccion']
