@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from producto.models import Producto, Categoria, Pedido, DetallePedido, Direccion
+from producto.models import Producto, Categoria, Pedido, DetallePedido, Direccion, Marca
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -20,6 +20,7 @@ from django.urls import reverse
 def home(request):
     productos = Producto.objects.all()
     categorias = Categoria.objects.all()
+    
 
     queryset = request.GET.get('buscar')
 
@@ -31,6 +32,7 @@ def home(request):
     data = {
         'productos': productos,
         'categorias': categorias,
+        
     }
 
     return render(request, 'index.html', data)
@@ -42,10 +44,12 @@ def admin(request):
     
         productos = Producto.objects.all()
         categorias = Categoria.objects.all()
+        marcas = Marca.objects.all()
 
         data = {
             'productos': productos,
-            'categorias': categorias
+            'categorias': categorias,
+            'marcas':marcas
         }
 
         if request.method != 'POST':
@@ -57,10 +61,12 @@ def admin(request):
             nombre = request.POST['nombre']
             descipcion = request.POST['desc']
             seccion = request.POST['seccion']
+            marca = request.POST['marca-list']
             precio = request.POST['precio']
             stock = request.POST['stock']
 
             categoria = Categoria.objects.get(nombre=seccion)
+            marca = Marca.objects.get(nombre = marca )
 
             objProducto = Producto.objects.create(
                 imagen=imagen,
@@ -68,6 +74,7 @@ def admin(request):
                 descripcion=descipcion,
                 precio=precio,
                 categoria=categoria,
+                marca = marca,
                 stock = stock,
             )
             objProducto.save()

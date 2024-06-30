@@ -47,7 +47,8 @@
                             <th class="col">Nombre</th>
                             <th class="col">Precio normal</th>
                             <th class="col">Descripcion</th>
-                            <th class="col-1">Seccion</th>
+                            <th class="col-1">Categoria</th>
+                            <th class="col-1">Marca</th>
                             <th class="col">Stock</th>
                             <th class="col">Opciones</th>
                         </tr>
@@ -70,6 +71,7 @@
                             <td class="col">$ {{i.precio}}</td>
                             <td class="col">{{i.descripcion}}</td>
                             <td class="col">{{i.categoria}}</td>
+                            <td class="col">{{i.marca}}</td>
                             <td class="col">{{i.stock}}</td>
                             <td>
 
@@ -135,7 +137,7 @@
 
                     <div class="col-lg-6">
 
-                        <label for="" class="form-label">Seccion de producto</label>
+                        <label for="" class="form-label">Seleccione categoria</label>
 
                         <select class="form-select mb-3" aria-label="Default select example" name="seccion">
                             <option selected>Seleccione</option>
@@ -149,6 +151,16 @@
                             <input type="number" class="form-control" id="precio" name="precio" placeholder="$$">
                         </div>
 
+                        <label for="" class="form-label">Seleccione marca</label>
+
+                        <select class="form-select mb-3" aria-label="Default select example" name="marca-list">
+                            <option selected>Seleccione</option>
+                            {% for marca in marcas %}
+                            <option value="{{marca.nombre}}">{{marca.nombre}}</option>
+                            {% endfor %}
+                        </select>
+
+                        
                         <div class=" mb-3">
                             <label for="stock" class="form-label">Stock</label>
                             <input type="number" class="form-control" id="stock" name="stock"
