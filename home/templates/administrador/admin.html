@@ -30,7 +30,13 @@
             <!--todo BOTONES (ENCABEZADO)-->
             <div class="m-3">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="fa-solid fa-plus me-2"></i>Agregar
+                    <i class="fa-solid fa-plus me-2"></i>Producto
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoria">
+                    <i class="fa-solid fa-plus me-2"></i>Categoria
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#marca">
+                    <i class="fa-solid fa-plus me-2"></i>Marca
                 </button>
 
             </div>
@@ -63,10 +69,10 @@
                             {% if i.imagen %}
                             <td class="col"><img src="{{i.imagen.url}}" alt="" class="img-fluid"></td>
                             {% else %}
-                            
+
                             <td class="col"><img src="media/producto/default.jpg" alt="" class="img-fluid"></td>
                             {% endif %}
-                            
+
                             <td class="col">{{i.nombre}}</td>
                             <td class="col">$ {{i.precio}}</td>
                             <td class="col">{{i.descripcion}}</td>
@@ -112,9 +118,11 @@
 
             <!--* CUERPO MODAL *-->
             <div class="container modal-body">
-                <form class="row" method="POST" action="" enctype="multipart/form-data" id="form">
+                <form class="row" method="POST" action=""  id="form-producto" name="form-producto">
 
                     {% csrf_token %}
+
+                    <input type="hidden" name="form_id" value="form-producto">
 
                     <div class="col-lg-6">
                         <div class=" mb-3">
@@ -160,12 +168,152 @@
                             {% endfor %}
                         </select>
 
-                        
+
                         <div class=" mb-3">
                             <label for="stock" class="form-label">Stock</label>
                             <input type="number" class="form-control" id="stock" name="stock"
                                 placeholder="Ingrese cantidad de stock">
                         </div>
+
+                    </div>
+
+                    <!--* FOOTER MODAL *-->
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Registrar</button>
+                    </div>
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- todo | Modal Nueva Categoria -->
+<div class="modal fade" id="categoria" tabindex="-1" aria-labelledby="categoria" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="categoria">Nueva Categoria</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!--* CUERPO MODAL *-->
+            <div class="container modal-body">
+                <form class="row" method="POST" action="" enctype="multipart/form-data" id="form-categoria">
+
+                    {% csrf_token %}
+
+                    <div class="col-lg-6">
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                
+                                {% for categoria in categorias %}
+                                         
+                                <tr>
+                                    <td>{{categoria.id}}</td>
+                                    <td>{{categoria.nombre}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        <input type="hidden" name="form_id" value="form-categoria">
+
+                        <div class=" mb-3">
+                            <label for="precio" class="form-label">Nombre categoria</label>
+                            <input type="text" class="form-control" id="precio" name="nueva-categoria" placeholder="Ingrese nombre de nueva categoria">
+                        </div>
+
+
+
+                    </div>
+
+                    <!--* FOOTER MODAL *-->
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Registrar</button>
+                    </div>
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- todo | Modal Nueva Marca -->
+<div class="modal fade" id="marca" tabindex="-1" aria-labelledby="marca" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="categoria">Nueva Marca</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!--* CUERPO MODAL *-->
+            <div class="container modal-body">
+                <form class="row" method="POST" action="" enctype="multipart/form-data" id="form-marca">
+
+                    {% csrf_token %}
+
+                    <div class="col-lg-6">
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                
+                                {% for marca in marcas %}
+                                         
+                                <tr>
+                                    <td>{{marca.id}}</td>
+                                    <td>{{marca.nombre}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        <input type="hidden" name="form_id" value="form-marca">
+
+                        <div class=" mb-3">
+                            <label for="precio" class="form-label">Nombre marca</label>
+                            <input type="text" class="form-control" id="precio" name="nueva-marca" placeholder="Ingrese nombre de nueva marca">
+                        </div>
+
+
 
                     </div>
 

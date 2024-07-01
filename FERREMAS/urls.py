@@ -22,9 +22,14 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import logout_then_login
 
 from django.urls import re_path
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -36,17 +41,23 @@ schema_view = get_schema_view(
       license=openapi.License(name="BSD License"),
    ),
    public=True,
-   #permission_classes=(permissions.AllowAny,),
+   permission_classes=(permissions.AllowAny,),
+   authentication_classes=[JWTAuthentication],
 )
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
+    #API SECCION
     path('api/', include('API.urls')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    #APPS SECCION
+    path('accounts/', include('django.contrib.auth.urls')),
     path('carro/',include('carro.urls')),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('accounts/', include('django.contrib.auth.urls')),
     path('logout/', logout_then_login, name='logout'),
     path('producto/', include('producto.urls'), name='producto'),
 ]

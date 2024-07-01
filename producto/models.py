@@ -24,7 +24,7 @@ class Producto(models.Model):
     descripcion = models.TextField()
     marca = models.ForeignKey(Marca, on_delete=models.PROTECT, related_name='marca', default=1)
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
-    imagen = models.ImageField(upload_to='producto', null=True, blank=True, default='media/producto/default.jpg')
+    imagen = models.ImageField(upload_to='producto', null=True, blank=True, default='/producto/default.jpg')
     stock = models.IntegerField(null=True)
 
     def __str__(self):
