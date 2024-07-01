@@ -38,7 +38,7 @@
 </head>
 
 
-
+{% if request.session.carro.items %}
 <!--CONTENIDO DEL CARRITO DE COMPRA-->
 <section  class="carrito">
     <div class="container">
@@ -47,7 +47,7 @@
 
                 <!--Falta boton para vaciar carro-->
 
-                {% if request.session.carro.items %}
+                
 
                 <div class="container mt-5">
                     <div class="d-flex justify-content-end">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                {%endif%}
+                
 
 
 
@@ -103,7 +103,7 @@
                                             value="{{ value.cantidad }}" readonly id="cantidad-{{ value.producto_id }}">
 
                                         <span class="input-group-btn btn_plus">
-                                            <button type="button" class="btn btn-number" onclick="sumarProducto({{ value.producto_id }})">
+                                            <button type="button" class="btn btn-number" onclick="sumarProducto({{ value.producto_id }});">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                             </button>
 
@@ -212,6 +212,20 @@
         </div>
     </div>
 </section>
+{% else %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col shadow-lg text-center m-3 p-5">
+
+            <img src="{% static 'imagenes/estante.png' %}" alt="" class="img-fluid">
+    
+            <h2 class="p-4">Su carro de compras esta vacio</h2>
+    
+            <a href="{% url 'home:home' %}" class="btn btn-outline-secondary">Comprar en ferremas.cl</a>
+        </div>
+    </div>
+</div>
+{%endif%}
 
 
 <!--BOTON PARA CONFIRMAR COMPRA-->
@@ -249,20 +263,14 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Region</label>
-                        <select class="form-select" aria-label="Default select example" name="region">
+                        <select class="form-select" aria-label="Default select example" name="region" id="regionSelect">
                             <option selected>Seleccione la region</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Comuna</label>
-                        <select class="form-select" aria-label="Default select example" name="comuna">
+                        <select class="form-select" aria-label="Default select example" name="comuna" id="comunaSelect">
                             <option selected>Seleccione la comuna</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -292,6 +300,8 @@
         </form>
     </div>
 </div>
+
+<script src="{% static 'js/api_direccion.js' %}"></script>
 
 <script>
     function sumarProducto(productoId) {
@@ -325,6 +335,55 @@
         },
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const regionSelect = document.getElementById('regionSelect');
+        const comunaSelect = document.getElementById('comunaSelect');
+        const apiUrl = 'https://gist.githubusercontent.com/juanbrujo/0fd2f4d126b3ce5a95a7dd1f28b3d8dd/raw/b8575eb82dce974fd2647f46819a7568278396bd/comunas-regiones.json';
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const regiones = data.regiones;
+
+                // Llenar el select de regiones
+                regiones.forEach(region => {
+                    const option = document.createElement('option');
+                    option.value = region.region;
+                    option.textContent = region.region;
+                    regionSelect.appendChild(option);
+                });
+
+                // Evento para cambiar las comunas cuando se seleccione una región
+                regionSelect.addEventListener('change', function() {
+                    const selectedRegion = regionSelect.value;
+                    const comunas = regiones.find(region => region.region === selectedRegion).comunas;
+
+                    // Limpiar el select de comunas
+                    comunaSelect.innerHTML = '<option selected>Seleccione la comuna</option>';
+
+                    // Llenar el select de comunas
+                    comunas.forEach(comuna => {
+                        const option = document.createElement('option');
+                        option.value = comuna;
+                        option.textContent = comuna;
+                        comunaSelect.appendChild(option);
+                    });
+                });
+            })
+            .catch(error => console.error('Error al cargar los datos:', error));
+    });
+</script>
+
+
+
+
+
+
+
+
+
 
 
 

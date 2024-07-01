@@ -57,7 +57,6 @@ def admin(request):
             return render(request, 'administrador/admin.html', data)
         else:
             form_id = request.POST.get('form_id')
-            print(form_id)
             if form_id == 'form-producto':
                 imagen = request.FILES.get('imagen')
                 if not imagen:

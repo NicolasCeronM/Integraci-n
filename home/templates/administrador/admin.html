@@ -84,8 +84,6 @@
                                 <a href="{% url 'home:eliminar' i.id %}"> <button class="btn btn-danger mb-1"><i
                                             class="fa-solid fa-trash-can"></i></button></a>
 
-                                <a href="#"> <button class="btn btn-primary mb-1"><i
-                                            class="fa-regular fa-pen-to-square"></i></button></a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -118,7 +116,7 @@
 
             <!--* CUERPO MODAL *-->
             <div class="container modal-body">
-                <form class="row" method="POST" action=""  id="form-producto" name="form-producto">
+                <form class="row" method="POST" action=""  id="form-producto" name="form-producto" enctype="multipart/form-data">
 
                     {% csrf_token %}
 

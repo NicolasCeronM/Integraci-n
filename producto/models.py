@@ -24,14 +24,14 @@ class Producto(models.Model):
     descripcion = models.TextField()
     marca = models.ForeignKey(Marca, on_delete=models.PROTECT, related_name='marca', default=1)
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
-    imagen = models.ImageField(upload_to='producto', null=True, blank=True, default='/producto/default.jpg')
+    imagen = models.ImageField(upload_to='producto', default='C:/Users/nicol/Desktop/Integracionnde plataformas/Pagina web/FERREMAS/media/default.jpg')
     stock = models.IntegerField(null=True)
 
     def __str__(self):
         return self.nombre
     
 class Direccion(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='direccion')
+    user = models.ForeignKey(User, on_delete=models.PROTECT,related_name='direccion')
     nombre = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
     comuna = models.CharField(max_length=100)
@@ -43,7 +43,7 @@ class Direccion(models.Model):
         return str(self.nombre)
 
 class Pedido(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='pedidos')
+    user = models.ForeignKey(User, on_delete=models.PROTECT,related_name='pedidos')
     created_at = models.DateTimeField(auto_now_add=True)
     direccion = models.ForeignKey(Direccion,on_delete=models.PROTECT, default=1)
     total = models.IntegerField()
@@ -60,7 +60,7 @@ class Pedido(models.Model):
     
     
 class DetallePedido(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='detalle_pedido')
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='detalle_pedido')
     producto = models.ForeignKey(Producto, on_delete=models.PROTECT, related_name='detalles_pedido')
     pedido = models.ForeignKey(Pedido, on_delete=models.PROTECT, related_name='detalles_pedido')
     cantidad = models.IntegerField(default=1)
