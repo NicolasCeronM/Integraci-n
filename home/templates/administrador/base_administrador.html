@@ -27,7 +27,8 @@
                     <img src="{% static 'imagenes/ferre.jpg' %}" alt="" width="200px" height="165">
                 </a></div>
             <div class="list-group list-group-flush my-3">
-                <a href="{% url 'home:home' %}" class="list-group-item list-group-item-action bg-transparent second-text">
+                <a href="{% url 'home:home' %}"
+                    class="list-group-item list-group-item-action bg-transparent second-text">
                     <i class="fa-solid fa-desktop me-2"></i>Ir a la pagina</a>
 
                 <a href="{% url 'home:administrador' %}" class="list-group-item list-group-item-action bg-transparent second-text 
@@ -37,6 +38,10 @@
                 <a href="{% url 'home:pedidos' %}" class="list-group-item list-group-item-action bg-transparent second-text 
                     {% if request.path == '/pedidos' %} active {% endif %}">
                     <i class="fa-solid fa-receipt me-2"></i>Pedidos</a>
+
+                <a href="{% url 'home:adminapi' %}" class="list-group-item list-group-item-action bg-transparent second-text 
+                    {% if request.path == '/adminapi/' %} active {% endif %}">
+                    <i class="fa-solid fa-network-wired me-2"></i>API</a>
 
 
                 <a href="#" onclick="cerrarSesion()"

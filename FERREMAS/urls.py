@@ -54,10 +54,11 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     #APPS SECCION
     path('accounts/', include('django.contrib.auth.urls')),
     path('carro/',include('carro.urls')),
-    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    
     path('logout/', logout_then_login, name='logout'),
     path('producto/', include('producto.urls'), name='producto'),
 ]

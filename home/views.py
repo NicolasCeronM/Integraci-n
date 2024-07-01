@@ -156,6 +156,10 @@ def export_pedidos_csv(request):
 
     return response
 
+def admin_api(request):
+
+    return render(request,'administrador/api_admin.html')
+
 
 def eliminar(request, id):
 

@@ -21,10 +21,12 @@ def detalle_producto(request,id):
 
     producto_id = id
     producto = Producto.objects.filter(id=producto_id)
+    categoria = Categoria.objects.all()
 
     data = {
 
-        'producto':producto
+        'producto':producto,
+        'categoria':categoria
     }
 
     return render(request, 'unitario/detalle_producto.html', data)
