@@ -1,6 +1,6 @@
 import pytest
 from django.contrib.auth.models import User
-from producto.models import Producto, Categoria, Pedido, DetallePedido, Direccion
+from producto.models import Producto, Categoria, Pedido, DetallePedido, Direccion, Marca
 
 # Pruebas para el modelo Categoria
 @pytest.mark.django_db
@@ -13,17 +13,20 @@ def test_categoria_creation():
 @pytest.mark.django_db
 def test_producto_creation():
     categoria = Categoria.objects.create(nombre='Herramientas')
+    marca = Marca.objects.create(nombre='Generica')
     producto = Producto.objects.create(
         nombre='Taladro',
         precio=100.00,
         descripcion='Un taladro potente',
         categoria=categoria,
+        marca = marca,
         stock=10
     )
     assert producto.nombre == 'Taladro'
     assert producto.precio == 100.00
     assert producto.descripcion == 'Un taladro potente'
     assert producto.categoria == categoria
+    assert producto.marca == marca
     assert producto.stock == 10
     assert str(producto) == 'Taladro'
 
@@ -76,11 +79,13 @@ def test_pedido_creation():
 def test_detalle_pedido_creation():
     user = User.objects.create_user(username='testuser', password='testpass')
     categoria = Categoria.objects.create(nombre='Herramientas')
+    marca = Marca.objects.create(nombre='Generica')
     producto = Producto.objects.create(
         nombre='Taladro',
         precio=100.00,
         descripcion='Un taladro potente',
         categoria=categoria,
+        marca=marca,
         stock=10
     )
     direccion = Direccion.objects.create(
