@@ -30,7 +30,7 @@ Sigue los siguientes pasos para instalar y configurar el proyecto en tu máquina
 
 ```bash
 git clone https://github.com/tu-usuario/ferre-plus-comercial.git
-cd ferre-plus-comercial
+cd ferre-plus-comercial```
 
 ### Crear un entorno virtual
 
