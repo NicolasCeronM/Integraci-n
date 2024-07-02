@@ -31,3 +31,9 @@ Sigue los siguientes pasos para instalar y configurar el proyecto en tu máquina
 ```bash
 git clone https://github.com/tu-usuario/ferre-plus-comercial.git
 cd ferre-plus-comercial
+
+### Crear un entorno virtual
+
+```bash
+python -m venv env
+source env/bin/activate  # En Windows usa `env\Scripts\activate`
