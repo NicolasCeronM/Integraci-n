@@ -1,4 +1,4 @@
-
+console.log('nasdbhjkas')
 async function generateToken() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;

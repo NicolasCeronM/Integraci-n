@@ -1,7 +1,7 @@
 import pytest
 from django.http import HttpRequest
 from django.contrib.sessions.middleware import SessionMiddleware
-from producto.models import Producto, Categoria
+from producto.models import Producto, Categoria, Marca
 from carro.carro import Carro
 
 @pytest.fixture
@@ -17,12 +17,17 @@ def categoria():
     return Categoria.objects.create(nombre='Herramientas')
 
 @pytest.fixture
-def producto(categoria):
+def marca():
+    return Marca.objects.create(nombre='Generica')
+
+@pytest.fixture
+def producto(categoria, marca):
     return Producto.objects.create(
         id = 1,
         nombre='Taladro',
         precio=100.00,
         descripcion='Un taladro potente',
+        marca = marca,
         categoria=categoria,
         stock=10
     )

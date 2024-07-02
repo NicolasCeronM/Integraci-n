@@ -16,6 +16,7 @@ class Carro:
             self.carro[producto.id] = {
                 'producto_id':producto.id,
                 'nombre':producto.nombre,
+                'marca':producto.marca,
                 'precio':str(producto.precio),
                 'cantidad':1,
                 'imagen':producto.imagen.url
