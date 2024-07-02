@@ -88,7 +88,20 @@ WSGI_APPLICATION = 'FERREMAS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
+#Pruebas de mysql en la nuve
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'railway',
+#        'USER':'root',
+#        'HOST': 'viaduct.proxy.rlwy.net',
+#        'PASSWORD':'BzUxNSyyQLjlWwelyVhElpQObfSWeekb',
+#        'PORT':'43372',
+#    }
+# }
+
+#ORIGINAL DEL PROYECTO
+DATABASES = {   
    'default': {
        'ENGINE': 'django.db.backends.mysql',
        'NAME': 'ferremas',

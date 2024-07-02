@@ -1,22 +1,13 @@
-INSERT INTO ferremas.producto_producto VALUES 
-(1, 'MARTILLO TRAM MASTER 27MM', 5700, 'Martillo para martillar', 'producto/H1.jpg', 2, 200),
-(2, 'DESTORNILLADOR PHILLIPS 6x100', 1200, 'Destornillador para tornillos Phillips', 'producto/H2.jpg', 2, 150),
-(3, 'SIERRA MANUAL 300MM', 3200, 'Sierra manual para cortar madera', 'producto/H3.jpg', 2, 75),
-(4, 'LLAVE INGLESA 250MM', 4300, 'Llave ajustable para pernos', 'producto/H4.jpg', 2, 90),
-(5, 'TALADRO PERCUTOR 500W', 25000, 'Taladro para perforaciones en concreto', 'producto/H5.jpg', 1, 40),
-(6, 'ALICATE DE CORTE 160MM', 2100, 'Alicate para cortar cables', 'producto/H6.jpg', 2, 130),
-(7, 'NIVEL DE BURBUJA 400MM', 1800, 'Nivel para medir inclinación', 'producto/H7.jpg', 7, 60),
-(8, 'CINTA MÉTRICA 5M', 900, 'Cinta métrica para mediciones', 'producto/H8.jpg', 7, 200),
-(9, 'LIMA DE METAL 200MM', 1100, 'Lima para desbastar metales', 'producto/H9.jpg', 2, 140),
-(10, 'CORTAFIERRO 150MM', 2500, 'Herramienta para cortar metal', 'producto/H10.jpg', 2, 80),
-(11, 'MACHUELO M3', 800, 'Herramienta para hacer roscas', 'producto/H11.jpg', 2, 300),
-(12, 'ESCUADRA METÁLICA 300MM', 2200, 'Escuadra para medir ángulos', 'producto/H12.jpg', 7, 120),
-(13, 'SERRUCHO DE COSTILLA 350MM', 2700, 'Serrucho para carpintería', 'producto/H13.jpg', 2, 95),
-(14, 'PINCEL 2 PULGADAS', 600, 'Pincel para pintura', 'producto/H14.jpg', 3, 180),
-(15, 'BROCHA DE ACERO 4 FILAS', 1300, 'Brocha para limpiar superficies', 'producto/H15.jpg', 3, 110),
-(16, 'MASILLA PARA MADERA 500G', 1500, 'Masilla para reparar madera', 'producto/H16.jpg', 3, 160),
-(17, 'ESMALTE SINTÉTICO 1L', 7500, 'Esmalte para pintar superficies', 'producto/H17.jpg', 3, 70),
-(18, 'ESPÁTULA METÁLICA 100MM', 850, 'Espátula para aplicar masilla', 'producto/H18.jpg', 3, 190),
-(19, 'CÚTER DE SEGURIDAD 18MM', 500, 'Cúter para cortar materiales', 'producto/H19.jpg', 2, 220),
-(20, 'LLAVE DE TUBO 1/2"', 3700, 'Llave para tubos y cañerías', 'producto/H20.jpg', 2, 85);
-
+INSERT INTO ferremas.producto_producto VALUES (132, 'CHAPA ACAN.0,30X0,90X6,10CM', 20000, 'Descripción de pruebas', 'producto/con2_2wbiTHP.jpg', 1, 45, 2);
+INSERT INTO ferremas.producto_producto VALUES (133, 'STATOFIX 100G', 13670, 'Descripción de pruebas', 'producto/con3_6zWmehu.jpg', 1, 23, 7);
+INSERT INTO ferremas.producto_producto VALUES (134, 'CORTADORA MANUAL DE PISO 1.20MT 5134 FSY', 1200000, 'Descripción de pruebas', 'producto/man1.jpg', 2, 100, 4);
+INSERT INTO ferremas.producto_producto VALUES (135, 'SERRUCHO CARP 18\ TRAMONTINA', 40000, 'Descripcion de prueba', 'producto/man2.jpg', 2, 500, 6);
+INSERT INTO ferremas.producto_producto VALUES (136, 'LONA ANARANJADA 4X8M', 14000, 'Descripcion descripcion xd xd xd xd xd xd', 'producto/basic.jpg', 3, 300, 1);
+INSERT INTO ferremas.producto_producto VALUES (137, 'GANCHO PLASTICO 17006 3M MINI', 7000, 'Un ganchito pa gancheaaarrrr', 'producto/basic2.jpg', 3, 1000, 4);
+INSERT INTO ferremas.producto_producto VALUES (138, 'ZAPATON SEGURIDAD 42 PUNT. PLAST BSL4400', 27000, 'Descripcion de pruebas de seguridad', 'producto/seg.jpg', 4, 300, 3);
+INSERT INTO ferremas.producto_producto VALUES (139, 'LENTE SEG. DEP NEGRO 14302', 16000, 'Seguridad de ojos para ver', 'producto/seg2.jpg', 4, 400, 8);
+INSERT INTO ferremas.producto_producto VALUES (140, 'EXTRACTOR TORNILLO 5PZ UYUS EXT501', 20000, 'Descripción de tornillos para usar en cosas donde se ocupan', 'producto/tor1.jpg', 5, 45, 5);
+INSERT INTO ferremas.producto_producto VALUES (141, 'TORNILLO MITTOFIX 6X80 X100UND', 20000, 'Descripcion de caja de tornillos', 'producto/tor2.jpg', 5, 300, 9);
+INSERT INTO ferremas.producto_producto VALUES (142, 'MEZCLADORA RUBIMIX-7 230V RU1.26900 RUBI', 120000, 'La Rubimix-7 Es una mezcladora de morteros y líquidos profesional, gracias a su gran potencia de 1200w, este mezclador resulta ideal para el mezclado de adhesivos cementosos, resinas, pinturas y otros materiales. Incluye: varilla mezcladora tipo m-120-r...', 'producto/fija.jpg', 6, 500, 6);
+INSERT INTO ferremas.producto_producto VALUES (143, 'MEDIDOR DE DISTANCIA LASER 40M GL MDL-74', 88000, 'Medidor entero pulento', 'producto/medi.jpg', 7, 100, 3);
+INSERT INTO ferremas.producto_producto VALUES (144, 'RUEDA MEDIDOR DE DISTANCIA ANALOGICA', 22000, 'Descripcion de medidor de rueda', 'producto/medi2.jpg', 7, 899, 4);
