@@ -15,7 +15,11 @@ async function generateToken() {
         const data = await response.json();
         document.getElementById('accessToken').value = 'Bearer ' + data.access;  // Asegúrate de que 'access' sea el campo correcto en la respuesta JSON
     } else {
-        alert('Error al obtener el token. Verifica tus credenciales.');
+        Swal.fire({
+            title: "Error",
+            text: "Verifica tus credenciales",
+            icon: "error"
+          });
     }
 }
 
@@ -23,5 +27,9 @@ function copyToken() {
     const tokenField = document.getElementById('accessToken');
     tokenField.select();
     document.execCommand('copy');
-    alert('Token copiado al portapapeles');
+    Swal.fire({
+        title: "Copiado",
+        text: "Token copiado al portapapeles",
+        icon: "success"
+      });
 }

@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
 
+{% for u in user.groups.all %}
+
+<p>{{u.name}}</p>
+
+{% endfor %}
 
 <!--todo| CARRUSEL PRINCIPAL |-->
 <div id="carouselExampleInterval" class="carousel slide mt-3" data-bs-ride="carousel">
@@ -93,6 +98,18 @@
 </div>
 
 <script src="{% static 'js/carrito.js' %}"></script>
+
+{% if messages %}
+{% for m in messages %}
+<script>
+    Swal.fire({
+        'title': 'Hecho',
+        'text': '{{m}}',
+        'icon': '{{m.tags}}'
+    })
+</script>
+{% endfor %}
+{% endif %}
 
 
 {% endblock content %}

@@ -183,7 +183,7 @@
                                     <div class="linea lineatotal row">
                                         <spam>Direccion</spam>
 
-                                        <select class="form-select" aria-label="Default select example">
+                                        <select class="form-select" id="form-select" aria-label="Default select example">
                                             <option selected>Selecciones una direccion</option>
 
                                             {% for direc in direcciones %}
@@ -301,7 +301,6 @@
     </div>
 </div>
 
-<script src="{% static 'js/api_direccion.js' %}"></script>
 
 <script>
     function sumarProducto(productoId) {
@@ -324,16 +323,32 @@
     
     const mp = new MercadoPago('{{ public_key }}');
 
-    mp.bricks().create("wallet", "wallet_container", {
-        initialization: {
-            preferenceId: "{{ preference_id }}",
-        },
-        customization: {
-            texts: {
-                valueProp: 'smart_option',
+    let selectElement = document.getElementById('form-select');
+
+    selectElement.addEventListener('change', function() {
+
+        if (selectElement.value !== 'Selecciones una direccion') {
+
+            mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "{{ preference_id }}",
             },
-        },
+            customization: {
+                texts: {
+                    valueProp: 'smart_option',
+                },
+            },
+            });
+        } else {
+            document.getElementById('wallet_container').innerHTML = '';
+        }
     });
+
+        
+
+
+
+    
 </script>
 
 <script>
