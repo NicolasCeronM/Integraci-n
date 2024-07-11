@@ -33,21 +33,21 @@
     <link rel="manifest" href="https://www.ferremas.com.py/favicons/site.webmanifest?1684938985">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    
+
 
 </head>
 
 
 {% if request.session.carro.items %}
 <!--CONTENIDO DEL CARRITO DE COMPRA-->
-<section  class="carrito">
+<section class="carrito">
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-8">
 
                 <!--Falta boton para vaciar carro-->
 
-                
+
 
                 <div class="container mt-5">
                     <div class="d-flex justify-content-end">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                
+
 
 
 
@@ -80,7 +80,7 @@
 
                     <div class="carrito_prod_numeros">
                         <button class="eliminar_producto" onclick="eliminarProducto({{ value.producto_id }})">
-                            <img src="https://www.ferremas.com.py/assets/img/eliminar.svg" class="img-fluid"/>
+                            <img src="https://www.ferremas.com.py/assets/img/eliminar.svg" class="img-fluid" />
                         </button>
 
                         <div class="un_producto_info_bottom">
@@ -103,7 +103,8 @@
                                             value="{{ value.cantidad }}" readonly id="cantidad-{{ value.producto_id }}">
 
                                         <span class="input-group-btn btn_plus">
-                                            <button type="button" class="btn btn-number" onclick="sumarProducto({{ value.producto_id }});">
+                                            <button type="button" class="btn btn-number"
+                                                onclick="sumarProducto({{ value.producto_id }});">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                             </button>
 
@@ -134,7 +135,7 @@
                                 <span id="importe-total" class="badge bg-primary"
                                     data-value="{{ importe_total_carro }}">{{importe_total_carro }}</span>
                             </p>
-                            
+
                             <div class="currency-select-container">
                                 <label for="currency-select" class="form-label">Selecciona una moneda:</label>
                                 <select id="currency-select" class="form-select">
@@ -149,7 +150,7 @@
                         </div>
                     </div>
 
-                    
+
                 </body>
 
                 </html>
@@ -183,18 +184,48 @@
                                     <div class="linea lineatotal row">
                                         <spam>Direccion</spam>
 
-                                        <select class="form-select" id="form-select" aria-label="Default select example">
-                                            <option selected>Selecciones una direccion</option>
 
-                                            {% for direc in direcciones %}
-                                            {% if direc.user == user %}
-                                            <option value="{direc.user}">{{direc}}</option>
-                                            {% endif %}
-                                            {% endfor %}
-                                        </select>
+                                        {% if direccion_id %}
 
-                                        <button class="btn btn-success mt-2" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal"> Nueva direccion</button>
+
+                                        {% for de in direccion_envio %}
+
+                                        {{de}}
+
+                                        {% endfor %}
+
+                                        <a href="{% url 'carro:cambiar_direccion' %}"><button
+                                                class="btn brn-primary">Cambiar direccion</button></a>
+
+
+
+
+
+                                        {% else %}
+
+                                        <form method="POST" action="{% url 'carro:confirmar_direccion' %}">
+                                            {% csrf_token %}
+                                            <select class="form-select" name="direccion" id="form-select"
+                                                aria-label="Default select example">
+                                                <option selected>Selecciones una direccion</option>
+                                                {% for direc in direcciones %}
+                                                {% if direc.user == user %}
+                                                <option value="{{ direc.id }}">{{ direc }}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                            <div class="d-grid gap-2 d-md-block">
+                                                <button type="submit" class="btn btn-success">Confirmar
+                                                    direccion</button>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal">Nueva direccion</button>
+                                            </div>
+                                        </form>
+
+                                        {% endif %}
+
+
+
 
                                     </div>
 
@@ -218,9 +249,9 @@
         <div class="col shadow-lg text-center m-3 p-5">
 
             <img src="{% static 'imagenes/estante.png' %}" alt="" class="img-fluid">
-    
+
             <h2 class="p-4">Su carro de compras esta vacio</h2>
-    
+
             <a href="{% url 'home:home' %}" class="btn btn-outline-secondary">Comprar en ferremas.cl</a>
         </div>
     </div>
@@ -302,17 +333,30 @@
 </div>
 
 
+{% if not direccion_id %}
+
+<div class="alert alert-danger mt-3" role="alert">
+    Deves confirmar la direccion para continuar con la compra
+</div>
+
+    
+{% endif %}
+    
+
+
+
+
 <script>
     function sumarProducto(productoId) {
-    $.ajax({
-        url: `/carro/sumar_producto/${productoId}/`,
-        method: 'GET',
-        success: function(data) {
-            $('#cantidad-' + productoId).val(data.cantidad);
-            actualizarTotal(data.total);
-        }
-    });
-}
+        $.ajax({
+            url: `/carro/sumar_producto/${productoId}/`,
+            method: 'GET',
+            success: function (data) {
+                $('#cantidad-' + productoId).val(data.cantidad);
+                actualizarTotal(data.total);
+            }
+        });
+    }
 </script>
 <script src="{% static 'js/carro.js' %}"></script>
 
@@ -320,39 +364,39 @@
 <script src="{% static 'js/cambio_monedas.js' %}"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
-    
+
     const mp = new MercadoPago('{{ public_key }}');
 
     let selectElement = document.getElementById('form-select');
 
-    selectElement.addEventListener('change', function() {
+    selectElement.addEventListener('change', function () {
 
         if (selectElement.value !== 'Selecciones una direccion') {
 
             mp.bricks().create("wallet", "wallet_container", {
-            initialization: {
-                preferenceId: "{{ preference_id }}",
-            },
-            customization: {
-                texts: {
-                    valueProp: 'smart_option',
+                initialization: {
+                    preferenceId: "{{ preference_id }}",
                 },
-            },
+                customization: {
+                    texts: {
+                        valueProp: 'smart_option',
+                    },
+                },
             });
         } else {
             document.getElementById('wallet_container').innerHTML = '';
         }
     });
 
-        
 
 
 
-    
+
+
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const regionSelect = document.getElementById('regionSelect');
         const comunaSelect = document.getElementById('comunaSelect');
         const apiUrl = 'https://gist.githubusercontent.com/juanbrujo/0fd2f4d126b3ce5a95a7dd1f28b3d8dd/raw/b8575eb82dce974fd2647f46819a7568278396bd/comunas-regiones.json';
@@ -371,7 +415,7 @@
                 });
 
                 // Evento para cambiar las comunas cuando se seleccione una región
-                regionSelect.addEventListener('change', function() {
+                regionSelect.addEventListener('change', function () {
                     const selectedRegion = regionSelect.value;
                     const comunas = regiones.find(region => region.region === selectedRegion).comunas;
 

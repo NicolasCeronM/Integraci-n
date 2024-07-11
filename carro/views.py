@@ -9,7 +9,6 @@ import requests
 from carro.context_processor import importe_total_carro
 from django.contrib.auth.decorators import login_required
 
-
 # Create your views here.
 def vista_carro(request):
     sdk = mercadopago.SDK(settings.MERCADO_PAGO_ACCESS_TOKEN)
@@ -76,12 +75,18 @@ def vista_carro(request):
 
     direcciones = Direccion.objects.all()
     categorias = Categoria.objects.all()
+    direccion_id = request.session.get('direccion_id')
+
+ 
+    direccion_envio = Direccion.objects.filter(id = direccion_id)
 
     return render(request, 'carro.html', {
         'preference_id': preference['id'],
         'public_key': settings.MERCADO_PAGO_PUBLIC_KEY,
         'direcciones':direcciones,
-        'categorias':categorias
+        'categorias':categorias,
+        'direccion_id' :direccion_id,
+        'direccion_envio':direccion_envio,
     })
 
     
@@ -173,3 +178,14 @@ def eliminar_producto(request, producto_id):
         return JsonResponse({'message': 'Producto no encontrado'}, status=404)
     except KeyError as e:
         return JsonResponse({'message': f'Error al eliminar producto: {e}'}, status=500)
+
+def confirmar_direccion(request):
+    if request.method == 'POST':
+        direccion_id = request.POST.get('direccion')
+        if direccion_id:
+            request.session['direccion_id'] = direccion_id
+        return redirect('carro:carro') 
+    
+def cambiar_direccion(request):
+    del request.session['direccion_id']
+    return redirect('carro:carro') 

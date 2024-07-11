@@ -228,7 +228,13 @@ def vista_usuario(request):
     status = request.GET.get('status')
 
     if status == 'approved':
-        pedido = Pedido.objects.create(user=request.user, total=importe_total,direccion_id = 6)
+        direccion_id = request.session.get('direccion_id')
+        if direccion_id:
+            direccion = Direccion.objects.get(id=direccion_id)
+            pedido = Pedido.objects.create(user=request.user, total=importe_total,direccion=direccion)
+            del request.session['direccion_id']
+        else:
+            pedido = Pedido.objects.create(user=request.user, total=importe_total,direccion_id=11)
 
         carro = Carro(request)
         compra = [
