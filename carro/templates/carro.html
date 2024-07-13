@@ -150,10 +150,24 @@
                         </div>
                     </div>
 
+                    {% if not direccion_id %}
+
+
+
+                    <div class="alert alert-danger mt-3 " role="alert">
+                        Deves confirmar la direccion para continuar con la compra
+                    </div>
+
+
+
+
+
+                    {% endif %}
+
+
 
                 </body>
 
-                </html>
                 <!--termino-->
 
 
@@ -184,37 +198,34 @@
                                     <div class="linea lineatotal row">
                                         <spam>Direccion</spam>
 
-
                                         {% if direccion_id %}
 
+                                            {% for de in direccion_envio %}
 
-                                        {% for de in direccion_envio %}
+                                                <span class="fs-6"> <span class="fw-bold">Nombre:</span> {{de.nombre}} </span>
+                                                <span class="fs-6"><span class="fw-bold">Region:</span> {{de.region}} </span>
+                                                <span class="fs-6"><span class="fw-bold">Comuna:</span> {{de.comuna}} </span>
 
-                                        {{de}}
+                                            {% endfor %}
 
-                                        {% endfor %}
-
-                                        <a href="{% url 'carro:cambiar_direccion' %}"><button
-                                                class="btn brn-primary">Cambiar direccion</button></a>
-
-
-
-
-
+                                            <a href="{% url 'carro:cambiar_direccion' %}">
+                                                <button class="btn btn-primary">Cambiar direccion</button>
+                                            </a>
                                         {% else %}
 
-                                        <form method="POST" action="{% url 'carro:confirmar_direccion' %}">
+                                        <form method="POST" action="{% url 'carro:confirmar_direccion' %}" id="direccionForm">
                                             {% csrf_token %}
                                             <select class="form-select" name="direccion" id="form-select"
                                                 aria-label="Default select example">
-                                                <option selected>Selecciones una direccion</option>
+                                                <option value="default">Seleccione una direccion</option>
                                                 {% for direc in direcciones %}
                                                 {% if direc.user == user %}
                                                 <option value="{{ direc.id }}">{{ direc }}</option>
                                                 {% endif %}
                                                 {% endfor %}
                                             </select>
-                                            <div class="d-grid gap-2 d-md-block">
+
+                                            <div class="d-grid gap-2 mt-2">
                                                 <button type="submit" class="btn btn-success">Confirmar
                                                     direccion</button>
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -325,7 +336,10 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-success">Grardar direccion</button>
+
                 </div>
+
+
 
             </div>
         </form>
@@ -333,15 +347,7 @@
 </div>
 
 
-{% if not direccion_id %}
 
-<div class="alert alert-danger mt-3" role="alert">
-    Deves confirmar la direccion para continuar con la compra
-</div>
-
-    
-{% endif %}
-    
 
 
 
@@ -360,33 +366,31 @@
 </script>
 <script src="{% static 'js/carro.js' %}"></script>
 
-<!-- <script src="{% static 'js/carro.js' %}"></script> -->
 <script src="{% static 'js/cambio_monedas.js' %}"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 
     const mp = new MercadoPago('{{ public_key }}');
 
-    let selectElement = document.getElementById('form-select');
+    // Verifica si la variable 'direccion_id' existe en la sesión de Django
+    const direccionId = "{{ direccion_id|default:'' }}";
 
-    selectElement.addEventListener('change', function () {
+    if (direccionId) {
 
-        if (selectElement.value !== 'Selecciones una direccion') {
-
-            mp.bricks().create("wallet", "wallet_container", {
-                initialization: {
-                    preferenceId: "{{ preference_id }}",
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "{{ preference_id }}",
+            },
+            customization: {
+                texts: {
+                    valueProp: 'smart_option',
                 },
-                customization: {
-                    texts: {
-                        valueProp: 'smart_option',
-                    },
-                },
-            });
-        } else {
-            document.getElementById('wallet_container').innerHTML = '';
-        }
-    });
+            },
+        });
+    } else {
+        document.getElementById('wallet_container').innerHTML = '';
+    }
+
 
 
 
@@ -434,6 +438,21 @@
             .catch(error => console.error('Error al cargar los datos:', error));
     });
 </script>
+
+<script>
+    document.getElementById('direccionForm').addEventListener('submit', function(event) {
+        var selectElement = document.getElementById('form-select');
+        if (selectElement.value === 'default') {
+            event.preventDefault();  // Evita el envío del formulario
+            Swal.fire({
+            title: "Error",
+            text: "Por favor, seleccione una dirección válida.",
+            icon: "error"
+            });
+        }
+    });
+</script>
+
 
 
 
