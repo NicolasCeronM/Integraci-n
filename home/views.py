@@ -297,6 +297,8 @@ def bodega(request):
 
     pedidos = Pedido.objects.all()
 
+    detalle = DetallePedido.objects.all()
+
     queryset = request.GET.get('buscar-pedido')
 
     if queryset:
@@ -305,7 +307,8 @@ def bodega(request):
         ).distinct()
 
     data = {
-        'pedidos' : pedidos
+        'pedidos' : pedidos,
+        'detalle' : detalle
     }
 
     return render(request,'bodega/bodega.html', data)

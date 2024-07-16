@@ -63,21 +63,28 @@
                         {% for i in pedidos %}
                         <tr>
                             <td class="col">{{i.id}}</td>
-                            <td class="col">$ {{i.user}}</td>
-                            <td class="col">{{i.fecha}}</td>
+                            <td class="col">{{i.user.first_name}} {{i.user.last_name}}</td>
+                            <td class="col">{{i.created_at}}</td>
                             <td class="col">
                                 <strong>Region: </strong> {{i.direccion.region}} <br>
                                 <strong>Comuna:</strong> {{i.direccion.comuna}} <br>
-                                <strong>Calle:</strong> {{i.direccion.calle}}
+                                <strong>Calle:</strong> {{i.direccion.calle}} <br>
+                                <strong>Numero:</strong> {{i.direccion.numero}}
                             </td>
                             <td class="col">
 
-                                {% for p in i.productos %}
-                                <ul>
-                                    <li>
-                                        {{p}}
-                                    </li>
-                                </ul>
+                                {% for d in detalle %}
+                                    
+                                    {% if d.pedido.id == i.id %}
+
+                                    <ul>
+                                        <li>
+                                            {{d.producto}} X {{d.cantidad}}
+                                        </li>
+                                    </ul>
+                                        
+                                    {% endif %}
+                                        
                                 {% endfor %}
 
 
