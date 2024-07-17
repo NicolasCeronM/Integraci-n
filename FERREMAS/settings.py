@@ -172,7 +172,10 @@ LOGOUT_REDIRECT_URL = '/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-from decouple import config
+from decouple import config 
+
+
+
 
 # MERCADO PAGO CREDENCIALES
 
