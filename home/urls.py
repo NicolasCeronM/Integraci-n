@@ -11,6 +11,8 @@ urlpatterns = [
     path('pedidos', views.admin_pedido, name="pedidos"),
     path('adminapi/', views.admin_api, name="adminapi"),
     path('export/csv/', views.export_pedidos_csv, name='export_pedidos_csv'),
+    path('bodega/', views.bodega, name='bodega'),
+    path('cambiar_estado_pedido/', views.cambiar_estado_pedido, name='cambiar_estado_pedido'),
     # seccion de usuario
     path('mis_compras/', views.vista_usuario, name='mis_compras'),
 

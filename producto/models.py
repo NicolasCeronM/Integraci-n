@@ -43,14 +43,26 @@ class Direccion(models.Model):
         return str(self.nombre)
 
 class Pedido(models.Model):
+
+    ESTADO_OPCIONES = [
+        (0, 'En preparación'),
+        (1, 'En camino'),
+        (2, 'Entregado'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.PROTECT,related_name='pedidos')
     created_at = models.DateTimeField(auto_now_add=True)
-    direccion = models.ForeignKey(Direccion,on_delete=models.PROTECT, default=1)
+    direccion = models.ForeignKey(Direccion,on_delete=models.PROTECT, default=1, related_name='direccion')
     total = models.IntegerField()
+    estado = models.IntegerField(choices=ESTADO_OPCIONES, default=0)
 
     def __str__(self):
 
         return str(self.id)
+    
+    @property
+    def estado_display(self):
+        return dict(Pedido.ESTADO_OPCIONES).get(self.estado)
     
 
     class Meta:

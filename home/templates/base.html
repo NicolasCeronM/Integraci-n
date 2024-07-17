@@ -52,12 +52,26 @@
                     aria-expanded="false">
                     <i class="fa-solid fa-user"></i> {{user | upper}}
                     {% if request.user.is_staff %}
-                    (ADMIN)
+                    (STAFF)
                     {% endif %}
                 </button>
                 <ul class="dropdown-menu">
 
-                    {% if request.user.is_staff %}
+                    {% for u in user.groups.all %}
+                        {% if u.name == "bodega" %}
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="{% url 'home:bodega' %}"> <i class="fa-solid fa-dolly"></i> Bodega</a>
+                        </li>
+                        {% endif %}
+                        {% if u.name == "contabilidad" %}
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="{% url 'home:pedidos' %}"> <i class="fa-solid fa-calculator"></i> Contabilidad</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+
+                    {% if request.user.is_superuser %}
                     <li class="dropdown-item">
                         <a class="nav-link" href="{% url 'home:administrador' %}"> <i class="fa-solid fa-user"></i> Administrador</a>
                     </li>

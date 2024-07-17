@@ -98,9 +98,7 @@ def admin(request):
                 )
 
                 objmarca.save()
-
-
-            # messages.success(request,'Producto creado correctamente')
+                messages.success(request,'Producto creado correctamente')
 
             # return redirect(to='admin_page:productos')
 
@@ -216,8 +214,8 @@ def registro(request):
         if formulario.is_valid():
             formulario.save()
             user = authenticate(username = formulario.cleaned_data["username"], password = formulario.cleaned_data["password1"])
-            messages.success(request, 'Registrado correctamente')
             login(request, user)
+            messages.success(request,'Creado correctamente')
             return redirect(to='home:home')
         data["form"] = formulario
 
@@ -230,7 +228,13 @@ def vista_usuario(request):
     status = request.GET.get('status')
 
     if status == 'approved':
-        pedido = Pedido.objects.create(user=request.user, total=importe_total)
+        direccion_id = request.session.get('direccion_id')
+        if direccion_id:
+            direccion = Direccion.objects.get(id=direccion_id)
+            pedido = Pedido.objects.create(user=request.user, total=importe_total,direccion=direccion)
+            del request.session['direccion_id']
+        else:
+            pedido = Pedido.objects.create(user=request.user, total=importe_total,direccion_id=11)
 
         carro = Carro(request)
         compra = [
@@ -288,3 +292,32 @@ def enviar_mail(**kwargs):
     to= kwargs.get('emailusuario')
 
     send_mail(asunto,mensaje_texto,from_email,[to],html_message=mensaje)
+
+def bodega(request):
+
+    pedidos = Pedido.objects.all()
+
+    detalle = DetallePedido.objects.all()
+
+    queryset = request.GET.get('buscar-pedido')
+
+    if queryset:
+        pedidos = Pedido.objects.filter(
+            Q(id__icontains=queryset),
+        ).distinct()
+
+    data = {
+        'pedidos' : pedidos,
+        'detalle' : detalle
+    }
+
+    return render(request,'bodega/bodega.html', data)
+
+def cambiar_estado_pedido(request):
+    if request.method == 'POST':
+        pedido_id = request.POST.get('pedido_id')
+        nuevo_estado = request.POST.get('select-estado')
+        pedido = get_object_or_404(Pedido, id=pedido_id)
+        pedido.estado = nuevo_estado
+        pedido.save()
+    return redirect('home:bodega')

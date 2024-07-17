@@ -24,6 +24,8 @@
             <div class="d-flex justify-content-between">
                 <span>Nro. Pedido: {{pedido.id}}</span>
                 <span>Fecha: {{pedido.created_at}}</span>
+
+
             </div>
             <hr>
             <p>Productos </p>
@@ -42,7 +44,22 @@
 
             <hr>
 
-            <p>Total: $ {{pedido.total}} </p>
+            <div class="d-flex justify-content-between">
+
+                <span>Total: $ {{pedido.total}} </span>
+                {% if pedido.estado == 0 %}
+                <span class="badge text-bg-primary">Estado: {{pedido.estado_display}}</span>
+                {% endif %}
+
+                {% if pedido.estado == 1 %}
+                <span class="badge text-bg-warning">Estado: {{pedido.estado_display}}</span>
+                {% endif %}
+
+                {% if pedido.estado == 2 %}
+                <span class="badge text-bg-success">Estado: {{pedido.estado_display}}</span>
+                {% endif %}
+            </div>
+
 
         </div>
         {% endfor %}

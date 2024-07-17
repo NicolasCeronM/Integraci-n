@@ -2,7 +2,7 @@ import pytest
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.test import Client
-from producto.models import Producto, Categoria
+from producto.models import Producto, Categoria, Marca
 
 # Fixture para crear un usuario
 @pytest.fixture
@@ -22,14 +22,20 @@ def client(user):
 def categoria(db):
     return Categoria.objects.create(nombre='Herramientas')
 
+# Fixture para crear una marca
+@pytest.fixture
+def marca(db):
+    return Marca.objects.create(nombre='Herramientas')
+
 # Fixture para crear un producto
 @pytest.fixture
-def producto(categoria, db):
+def producto(categoria, db, marca):
     return Producto.objects.create(
         nombre='Taladro',
         precio=100.00,
         descripcion='Un taladro potente',
         categoria=categoria,
+        marca = marca,
         stock=10
     )
 
