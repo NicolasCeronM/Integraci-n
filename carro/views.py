@@ -53,7 +53,7 @@ def vista_carro(request):
         preference_data = {
             "items": items,
             "payer": {
-                "email": "comprador.test.user@example.com"
+                "email": request.user.email
             },
             "back_urls": {
                 "success": "http://localhost:8000/mis_compras",
