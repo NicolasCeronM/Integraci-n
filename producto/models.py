@@ -31,16 +31,17 @@ class Producto(models.Model):
         return self.nombre
     
 class Direccion(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT,related_name='direccion')
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='direccion')
     nombre = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
     comuna = models.CharField(max_length=100)
     calle = models.CharField(max_length=100)
-    numero = models.IntegerField()
+    numero = models.CharField(max_length=50)  # <- cambiado de IntegerField a CharField
     dep = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return str(self.nombre)
+
 
 class Pedido(models.Model):
 

@@ -10,84 +10,82 @@ from carro.context_processor import importe_total_carro
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
 def vista_carro(request):
     sdk = mercadopago.SDK(settings.MERCADO_PAGO_ACCESS_TOKEN)
-
-    # Instancia del carrito de compras
     carro = Carro(request)
 
-    # Verificar si el carrito está vacío
     if not carro.carro:
-        # Redirigir a una página de productos o mostrar un mensaje de carrito vacío
         return render(request, 'carro.html')
-    
-    #Nueva direccion
-    
+
+    # Si se envía nueva dirección
     if request.method == 'POST':
-        nombre = request.POST['nombre']
-        region = request.POST['region']
-        comuna = request.POST['comuna']
-        calle = request.POST['calle']
-        numero = request.POST['numero']
-        casa = request.POST['casa']
-
-       
-
-        objProducto = Direccion.objects.create(
-            user = request.user,
-            nombre = nombre,
-            region = region,
-            comuna = comuna,
-            calle = calle,
-            numero = numero,
-            dep = casa,
+        Direccion.objects.create(
+            user=request.user,
+            nombre=request.POST['nombre'],
+            region=request.POST['region'],
+            comuna=request.POST['comuna'],
+            calle=request.POST['calle'],
+            numero=request.POST['numero'],
+            dep=request.POST['casa']
         )
-        objProducto.save()
 
- 
-    # Construir el atributo "items" basado en los productos del carrito
+    # Construir los items del carrito
     items = []
     for key, producto in carro.carro.items():
-        item = {
+        items.append({
             "title": producto['nombre'],
             "quantity": producto['cantidad'],
             "currency_id": "CLP",
             "unit_price": float(producto['precio']),
-            "description": f"Producto {producto['nombre']}",
-        }
-        items.append(item)
+            "description": f"Producto {producto['nombre']}"
+        })
 
-    preference_data = {
-        "items": items,
-        "payer": {
-            "email": request.user.email
-        },
-        "back_urls": {
-            "success": "http://localhost:8000/mis_compras",
-            "failure": "http://localhost:8000/",
-            "pending": "http://localhost:8000/"
-        },
-        "auto_return": "approved"
-    }
-
-    preference_response = sdk.preference().create(preference_data)
-    preference = preference_response["response"]
-
+    # Variables adicionales
+    direccion_id = request.session.get('direccion_id')
+    direccion_envio = Direccion.objects.filter(id=direccion_id)
     direcciones = Direccion.objects.all()
     categorias = Categoria.objects.all()
-    direccion_id = request.session.get('direccion_id')
+    preference_id = None
 
- 
-    direccion_envio = Direccion.objects.filter(id = direccion_id)
+    # Solo generamos preferencia si hay dirección confirmada
+    if direccion_id:
+        preference_data = {
+            "items": items,
+            "payer": {
+                "email": "comprador.test.user@example.com"
+            },
+            "back_urls": {
+                "success": "http://localhost:8000/mis_compras",
+                "failure": "http://localhost:8000/",
+                "pending": "http://localhost:8000/"
+            }
+            # "auto_return": "approved"  # Comentado para evitar error con localhost
+        }
+
+        try:
+            preference_response = sdk.preference().create(preference_data)
+           # print("💥 DEBUG - Respuesta completa:", preference_response)
+           # print("🔧 Datos enviados a MercadoPago:", preference_data)
+
+            preference = preference_response.get("response", {})
+            preference_id = preference.get("id")
+            print("✅ Preferencia generada:", preference_id)
+
+        except Exception as e:
+            print("❌ Error al generar preferencia:", str(e))
+            preference_id = None
+
 
     return render(request, 'carro.html', {
-        'preference_id': preference['id'],
+        'preference_id': preference_id,
         'public_key': settings.MERCADO_PAGO_PUBLIC_KEY,
-        'direcciones':direcciones,
-        'categorias':categorias,
-        'direccion_id' :direccion_id,
-        'direccion_envio':direccion_envio,
+        'direcciones': direcciones,
+        'categorias': categorias,
+        'direccion_id': direccion_id,
+        'direccion_envio': direccion_envio,
     })
+
 
     
 @login_required
