@@ -53,14 +53,14 @@ def vista_carro(request):
         preference_data = {
             "items": items,
             "payer": {
-                "email": request.user.email
+                "email": "test_user_1291106205@testuser.com"
             },
             "back_urls": {
-                "success": "http://localhost:8000/mis_compras",
+                "success": "https://rpst7h3c-8000.brs.devtunnels.ms/mis_compras",
                 "failure": "http://localhost:8000/",
                 "pending": "http://localhost:8000/"
-            }
-            # "auto_return": "approved"  # Comentado para evitar error con localhost
+            },
+            "auto_return": "approved"  # Comentado para evitar error con localhost
         }
 
         try:

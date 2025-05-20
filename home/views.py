@@ -1,3 +1,4 @@
+from email.header import Header
 from django.shortcuts import render, redirect, get_object_or_404
 from producto.models import Producto, Categoria, Pedido, DetallePedido, Direccion, Marca
 from django.core.mail import EmailMessage
@@ -274,24 +275,40 @@ def salir(request):
     logout(request)
     return redirect(to='home:home')
 
-def enviar_mail(**kwargs):
+from django.core.mail import EmailMessage
 
+
+"""
+def enviar_mail(**kwargs):
     asunto = 'Gracias por el pedido'
 
     ctx = {
         'pedido': kwargs.get('pedido'),
         'detalle_pedido': kwargs.get('detalle_pedido'),
-        'nombreusuario':kwargs.get('nombreusuario'),
+        'nombreusuario': kwargs.get('nombreusuario'),
         'total': kwargs.get('total'),
     }
 
-    mensaje =render_to_string('usuario/pedido.html',ctx)
+    mensaje_html = render_to_string('usuario/pedido.html', ctx)
+    mensaje_texto = strip_tags(mensaje_html)
+    
+    email = EmailMessage(
+        asunto,
+        mensaje_html,
+        'antoniobarraza1133@gmail.com',
+        [kwargs.get('emailusuario')],
+    )
+    email.content_subtype = 'html'
+    email.encoding = 'utf-8'  # 🔐 evita UnicodeEncodeError con ñ, tildes, emojis
+    email.send(fail_silently=False)
+"""
 
-    mensaje_texto = strip_tags(mensaje)
-    from_email='nicolas134b@gmail.com'
-    to= kwargs.get('emailusuario')
 
-    send_mail(asunto,mensaje_texto,from_email,[to],html_message=mensaje)
+def enviar_mail(**kwargs):
+    print("🧪 Correo simulado: no se envió nada.")
+
+
+    
 
 def bodega(request):
 
